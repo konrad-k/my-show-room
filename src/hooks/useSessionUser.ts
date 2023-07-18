@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export default function useSessionUser() {
   const getUser = () => {
     const userFromStorage = localStorage.getItem('user') || null;
