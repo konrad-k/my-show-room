@@ -1,6 +1,6 @@
-import { createBrowserRouter, RouterProvider, useLocation } from "react-router-dom";
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
 import { Navigate } from 'react-router-dom';
 import Autorization from "./pages/users/Autorization";
 import Signup from "./pages/users/Signup";

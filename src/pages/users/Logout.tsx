@@ -1,8 +1,9 @@
+import React from 'react';
 import supabase from "../../utils/Api"
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useNavigate } from 'react-router-dom';
 
-const Logout = () => {
+const Logout: React.FC = () => {
   const {setSessionUser} = useSessionUserContext();
   const navigate = useNavigate();
   

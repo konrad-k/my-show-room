@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from 'react';
@@ -9,7 +10,7 @@ import { uploadGallery, deleteGallery, getGalleries, GalleryEditForm } from "../
 import { getOrganization, uploadOrganization, OrganizationEditForm } from "../../modules/organization";
 import  { getProfile, uploadProfile, ProfileEditForm } from "../../modules/profile";
 
-const ProfileUpdate = () => {
+const ProfileUpdate: React.FC = () => {
   const {sessionUser, setSessionUser} = useSessionUserContext();
   const [profile, setProfile] = useState<Profile>(sessionUser?.user.profile || {});
   const [organization, setOrganization] = useState<Organization>(sessionUser?.user.organization || {});

@@ -1,10 +1,11 @@
+import React from 'react';
 import supabase from "../../utils/Api"
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const Autorization = () => {
+const Autorization: React.FC = () => {
   const {sessionUser, setSessionUser} = useSessionUserContext();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();

@@ -1,3 +1,4 @@
+import React from 'react';
 import supabase from "../utils/Api"
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
@@ -23,7 +24,7 @@ export const uploadGallery = async (data: Gallery, userId: string) => {
   }
 }
 
-export const deleteGallery = async (id: Number, userId: string) => {
+export const deleteGallery = async (id: number, userId: string) => {
   const {data: selectData, error} = await supabase?.from('galleries').update({status: 'deleted'}).eq('id', id).eq('user_id', userId).eq('status', 'active')
   .select();
   
@@ -44,7 +45,7 @@ export const getGalleries = async (userId: string) => {
   }
 }
 
-export const getGallery = async (id: Number) => {
+export const getGallery = async (id: number) => {
   const {data: selectData, error} = await supabase?.from('galleries').select().eq('id', id).eq('status', 'active');
 
   if (selectData) {

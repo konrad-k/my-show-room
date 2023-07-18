@@ -1,14 +1,15 @@
+import React from 'react';
 import supabase from "../../utils/Api"
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-const Signup = () => {
+const Signup: React.FC = () => {
   const {sessionUser, setSessionUser} = useSessionUserContext();
   const navigate = useNavigate();
   const { register, handleSubmit, getValues, formState: { errors } } = useForm();
-  const onSubmit: any = () => {
+  const onSubmit = () => {
     signUp(getValues('email'), getValues('password'))
   }
 

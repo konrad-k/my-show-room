@@ -1,3 +1,4 @@
+import React from 'react';
 import supabase from "../utils/Api"
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
@@ -44,11 +45,11 @@ export const ProfileEditForm: React.FC<profileEditFormProps> = props => {
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true}>
     <div className="row">
       <input type="text" placeholder="First Name" defaultValue={profile?.firstName}  {...registrProfile("firstName", { required: true })} />
-      {profileErrors.first_name && <span>This field is required</span>}
+      {profileErrors.firstName && <span>This field is required</span>}
     </div>
     <div className="row">
       <input type="text" placeholder="Last Name" defaultValue={profile?.lastName} {...registrProfile("lastName", { required: true })} />
-      {profileErrors.last_name && <span>This field is required</span>}
+      {profileErrors.lastName && <span>This field is required</span>}
     </div>
     <div className="row">
       <input type="text" placeholder="Avatar url" defaultValue={profile?.avatarUrl} {...registrProfile("avatarUrl")} />
