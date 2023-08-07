@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/galleries">Galleries</Link>
+            <Link to="/exhibition">Exhibition</Link>
           </li>
           <li>
             <Link to="/profile/update">Profile settings</Link>

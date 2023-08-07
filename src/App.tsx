@@ -8,6 +8,7 @@ import Logout from "./pages/users/Logout";
 import Dashboard from "./pages/Dashboard";
 import ProfileUpdate from "./pages/profile/ProfileUpdate";
 import NoPage from "./pages/NoPage";
+import Exhibition from "./pages/Exhibition";
 import useSessionUser from './hooks/useSessionUser';
 import './App.less'
 
@@ -88,6 +89,10 @@ const App: React.FC = () => {
         {
           path: 'logout',
           element: <Logout />,
+        },
+        {
+          path: 'exhibitions/:id',
+          element: <Exhibition />,
         },
         {
           path: '*',

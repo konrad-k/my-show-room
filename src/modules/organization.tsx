@@ -1,7 +1,5 @@
-import supabase from "../utils/Api"
+import React from 'react';
 import Organization from "../models/organization.model";
-import camelcaseKeys from 'camelcase-keys';
-import snakecaseKeys from 'snakecase-keys';
 
 interface organizationEditFormProps {
   organization: Organization;
@@ -9,34 +7,6 @@ interface organizationEditFormProps {
   organizationErrors: any;
   onSubmit: any;
   onReset?: any;
-}
-
-export const getOrganization = async (userId: string) => {
-  const {data: organizations } = await supabase.from('organizations')
-    .select("*")
-    .eq('user_id', userId);
-  
-  if (organizations) {
-    const [organization] = organizations as Organization[];
-    return camelcaseKeys(organization) as Organization;
-  } else {
-    return {} as Organization;
-  }
-}
-
-export const uploadOrganization = async (data: Organization, userId: string) => {
-  if (!data?.id) {
-    data.userId = userId;
-  }
-  const {data: organizations } = await supabase?.from('organizations').upsert(snakecaseKeys(data)).eq(data.id ? 'id' : 'user_id', data.id ? data.id : userId)
-  .select();
-
-  if (organizations) {
-    const [organization] = organizations as Organization[];
-    return camelcaseKeys(organization) as Organization;
-  } else {
-    return {} as Organization;
-  }
 }
 
 export const OrganizationEditForm: React.FC<organizationEditFormProps> = props => {
