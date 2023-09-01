@@ -1,4 +1,4 @@
-export default interface Gallery {
+export type Gallery = {
   id?: number;
   userId?: string;
   createdAt?: string;

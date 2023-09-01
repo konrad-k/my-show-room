@@ -1,38 +1,34 @@
 import React from 'react';
-import Gallery from "../models/gallery.model";
+import { Gallery } from "../models/gallery.model";
+import { EditFormProps } from "./EditForm";
 
-interface GalleryEditFormProps {
-  gallery: Gallery;
-  galleryEditing: Gallery;
-  registrGallery: any;
-  galleryErrors: any;
-  onSubmit: any;
-  onReset: any;
+interface GalleryEditFormProps extends EditFormProps {
+  gallery: Gallery | null;
 }
 
-export const GalleryEditForm: React.FC<GalleryEditFormProps> = props => {
-  const {gallery, galleryEditing, registrGallery, galleryErrors, onSubmit, onReset} = props;
+export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({gallery, registr, errors, onSubmit, onReset}) => {
+  const id = gallery?.id;
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true}>
-    { galleryEditing?.id && <input type="hidden" defaultValue={gallery?.id} {...registrGallery("id")} /> }
+    { gallery?.id && <input type="hidden" defaultValue={id} {...registr("id")} /> }
     <div className="row">
-      <input type="text" placeholder="Full Name" defaultValue={gallery?.fullName} {...registrGallery("fullName", { required: true })} />
-      {galleryErrors.fullName && <span>This field is required</span>}
+      <input type="text" placeholder="Full Name" defaultValue={gallery?.fullName} {...registr("fullName", { required: true })} />
+      {errors.fullName && <span>This field is required</span>}
     </div>
     <div className="row">
-      <input type="text" placeholder="Name" defaultValue={gallery?.name} {...registrGallery("name", { required: true })} />
-      {galleryErrors.name && <span>This field is required</span>}
+      <input type="text" placeholder="Name" defaultValue={gallery?.name} {...registr("name", { required: true })} />
+      {errors.name && <span>This field is required</span>}
     </div>
     <div className="row">
-      <input type="text" placeholder="description" defaultValue={gallery?.description} {...registrGallery("description")} />
+      <input type="text" placeholder="description" defaultValue={gallery?.description} {...registr("description")} />
     </div>
     <div className="row">
-      <input type="text" placeholder="address" defaultValue={gallery?.address} {...registrGallery("address")} />
+      <input type="text" placeholder="address" defaultValue={gallery?.address} {...registr("address")} />
     </div>
     <div className="row">
-      <input type="text" placeholder="logoUrl" defaultValue={gallery?.logoUrl} {...registrGallery("logoUrl")} />
+      <input type="text" placeholder="logoUrl" defaultValue={gallery?.logoUrl} {...registr("logoUrl")} />
     </div>
     <div className="row">
-      <textarea type="text" placeholder="style" defaultValue={gallery?.style} {...registrGallery("style")} />
+      <textarea type="text" placeholder="style" defaultValue={gallery?.style} {...registr("style")} />
     </div>
     <div className="row">
       <input type="submit" className="button button-primary" value="Save" />

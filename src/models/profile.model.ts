@@ -1,4 +1,4 @@
-export default interface Profle {
+export type Profile = {
   id?: string;
   firstName: string;
   lastName: string;

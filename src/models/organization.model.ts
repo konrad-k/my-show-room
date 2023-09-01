@@ -1,4 +1,4 @@
-export default interface Organization {
+export type Organization = {
   id?: string;
   name: string;
   fullName: string;

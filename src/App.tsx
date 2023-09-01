@@ -17,8 +17,6 @@ import {
   useSessionUserContext,
 } from './contexts/SessionUser';
 
-
-
 const routes = [
   {
     path: '',
@@ -34,35 +32,11 @@ interface ProtectedRouteInterface {
   element: JSX.Element
 }
 
-
-
 const App: React.FC = () => {
-  // const location = useLocation();
-  // const path = location.pathname;
-  // if (hasProfile() && path !== 'profile/update') {
-  //   return <Navigate to="/profile/update" />;
-  // }
-
-  // if (hasProfile() && path !== 'profile/update') {
-  //   router.push('/profile/update');
-  // }
-
-  const hasProfile = () => {
-    
-  }
-
   const ProtectedRoute = ({ element } : ProtectedRouteInterface) => {
     const {sessionUser} = useSessionUserContext();
   
-    const hasAccess = () => {
-      if (!sessionUser) return false;
-      return true;
-    };
-  
-    if (hasAccess()) {
-      return element;
-    } 
-    return <Navigate to="/login" />;
+    return sessionUser ? element : <Navigate to="/login" />
   };
 
   const ProfileRoute = () => {
@@ -115,9 +89,6 @@ const App: React.FC = () => {
 
   const router = createBrowserRouter(completeCheck());
 
-  // if (hasProfile() && path !== 'profile/update') {
-  //   router.push('/profile/update');
-  // }
   return (
     <SessionUserProvider>
       <RouterProvider router={router} />
