@@ -1,8 +1,8 @@
 import React from 'react';
-import RoomGallery from 'react-room-gallery';
+import RoomGallery from 'room-gallery';
 
 const Exhibition: React.FC = () => {
-  return <RoomGallery fetchUrl={'/data.json'}/>
+  return <RoomGallery fetch={'/data.json'} />
 }
 
 export default Exhibition;
