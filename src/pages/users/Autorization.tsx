@@ -81,7 +81,7 @@ const Autorization: React.FC = () => {
         </div>
       </form>
       <p>
-        <a href="/signup">Sign up</a>
+        <a href="#/signup">Sign up</a>
       </p>
     </>
     

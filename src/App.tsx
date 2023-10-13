@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
 import { Navigate } from 'react-router-dom';
 import Autorization from "./pages/users/Autorization";
@@ -87,7 +87,7 @@ const App: React.FC = () => {
     }
   }
 
-  const router = createBrowserRouter(completeCheck());
+  const router = createHashRouter(completeCheck());
 
   return (
     <SessionUserProvider>
