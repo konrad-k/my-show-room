@@ -2,7 +2,7 @@
   "name": "vite-gallery",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "homepage": "https://konrad-k.github.io/vite-gallery",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
