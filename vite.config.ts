@@ -10,6 +10,7 @@ export default mode => {
     server: {
       port: Number(env.APP_PORT)
     },
+    base: '/vite-gallery/',
     plugins: [react(), splitVendorChunkPlugin(), EnvironmentPlugin('all')],
     resolve: {
       alias: {
