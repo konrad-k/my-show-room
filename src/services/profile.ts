@@ -2,6 +2,7 @@ import api from "../utils/Api"
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
 import { Profile } from "../models/profile.model";
+import { FieldValues } from "react-hook-form";
 
 export const getProfile = async (userId: string) => {
   const {data: profiles} = await api!.from('profiles')
@@ -11,7 +12,7 @@ export const getProfile = async (userId: string) => {
   return returnOneProfile(profiles as Profile[]);
 }
 
-export const uploadProfile = async (data: Profile, userId: string) => {
+export const uploadProfile = async (data: FieldValues, userId: string) => {
   if (!data?.id) {
     data.userId = userId;
   }

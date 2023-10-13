@@ -28,7 +28,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({gallery, regist
       <input type="text" placeholder="logoUrl" defaultValue={gallery?.logoUrl} {...registr("logoUrl")} />
     </div>
     <div className="row">
-      <textarea type="text" placeholder="style" defaultValue={gallery?.style} {...registr("style")} />
+      <textarea placeholder="style" defaultValue={gallery?.style.toString()} {...registr("style")} />
     </div>
     <div className="row">
       <input type="submit" className="button button-primary" value="Save" />
