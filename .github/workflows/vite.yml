@@ -22,6 +22,10 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
+  build:
+    env:
+      PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+      PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
   deploy:
     environment:
       name: github-pages
