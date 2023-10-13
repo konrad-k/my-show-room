@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "postbuild": "del node_modules",
-    "build:dev": "vite build"
+    "build:dev": "vite build",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.14.0",
@@ -35,6 +37,7 @@
     "autoprefixer": "^10.4.14",
     "del-cli": "^5.0.0",
     "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^6.0.0",
     "prettier": "3.0.2",
     "sass": "^1.62.0",
     "vite": "^4.2.0"
