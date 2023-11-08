@@ -41,6 +41,7 @@
     "prettier": "3.0.2",
     "sass": "^1.62.0",
     "supabase-cli": "^0.0.21",
+    "typescript": "^5.2.2",
     "vite": "^4.2.0"
   }
 }
