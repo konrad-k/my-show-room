@@ -1,8 +1,8 @@
 {
-  "name": "vite-gallery",
+  "name": "my-show-room",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://konrad-k.github.io/vite-gallery",
+  "homepage": "https://konrad-k.github.io/my-show-room",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -40,6 +40,7 @@
     "gh-pages": "^6.0.0",
     "prettier": "3.0.2",
     "sass": "^1.62.0",
+    "supabase-cli": "^0.0.21",
     "vite": "^4.2.0"
   }
 }
