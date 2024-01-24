@@ -1,12 +1,13 @@
 import React from 'react';
 import supabase from "../../utils/Api"
-import { useSessionUserContext } from '../../contexts/SessionUser';
+import { useSessionUserContext, SessionUser } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import camelcaseKeys from 'camelcase-keys';
 
 const Autorization: React.FC = () => {
-  const {sessionUser, setSessionUser} = useSessionUserContext();
+  const { sessionUser, setSessionUser } = useSessionUserContext();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data: any) => {
@@ -14,45 +15,43 @@ const Autorization: React.FC = () => {
   }
 
   async function signInWithEmail(email: any, password: any) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    supabase.auth.signInWithPassword({
       email: email,
       password: password,
+    }).then((response) => {
+      const { data, error } = response;
+      if (error) {
+        alert(error);
+      } else if (data) {
+
+        const profilePromise = supabase.from('profiles')
+          .select("*")
+          .eq('user_id', data?.session?.user.id)
+
+        const organizationPromise = supabase.from('organizations')
+          .select("*")
+          .eq('user_id', data?.session?.user.id)
+
+        Promise.all([profilePromise, organizationPromise])
+          .then(([profileResponse, organizationResponce]) => {
+            const [profile] = profileResponse.data;
+            const [organization] = organizationResponce.data;
+
+            const newSession: SessionUser = {
+              id: data?.session?.user.id,
+              access_token: data?.session?.access_token,
+              expires_at: data?.session?.expires_at,
+              session: data.session,
+              email: data?.user?.email,
+              user: { id: data.user.id, email: data.user.email },
+              profile: camelcaseKeys(profile) || {},
+              organization: camelcaseKeys(organization) || {}
+            };
+            setSessionUser(newSession);
+          });
+      }
     });
-    if (error) {
-      alert(error);
-    } else if (data) {
 
-      const { data: profile } = await supabase.from('profile')
-        .select("*")
-        .eq('user_id', data?.session?.user.id)
-
-      const { data: organization } = await supabase.from('organizations')
-        .select("*")
-        .eq('user_id', data?.session?.user.id)
-      
-      const newSession = {
-        id: data?.session?.user.id,
-        access_token: data?.session?.access_token,
-        expires_at: data?.session?.expires_at,
-        session: data.session,
-        email: data?.user?.email,
-        user: data.user,
-        profile: {},
-        organization: {}
-      }
-
-      if (profile?.length) {
-        const [oneProfile] = profile;
-        newSession.profile = oneProfile
-      }
-
-      if (organization?.length) {
-        const [oneOrganization] = organization;
-        newSession.organization = oneOrganization
-      }
-
-      setSessionUser(newSession);
-    }
   }
 
   useEffect(() => {
@@ -77,14 +76,14 @@ const Autorization: React.FC = () => {
           {errors.password && <span>This field is required</span>}
         </div>
         <div className="row">
-        <input type="submit" className="button button-primary" />
+          <input type="submit" className="button button-primary" />
         </div>
       </form>
       <p>
         <a href="#/signup">Sign up</a>
       </p>
     </>
-    
+
   );
 }
 

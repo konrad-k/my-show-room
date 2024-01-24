@@ -12,14 +12,14 @@ import { uploadGallery, deleteGallery, getGalleries } from "../../services/galle
 import { OrganizationEditForm } from "../../modules/organization";
 import { getOrganization, uploadOrganization } from "../../services/organization";
 
-import  { ProfileEditForm } from "../../modules/profile";
-import  { getProfile, uploadProfile } from "../../services/profile";
+import { ProfileEditForm } from "../../modules/profile";
+import { getProfile, uploadProfile } from "../../services/profile";
 
 const ProfileUpdate: React.FC = () => {
-  const {sessionUser, setSessionUser} = useSessionUserContext();
-  const [profile, setProfile] = useState<Profile>(sessionUser?.user.profile || {});
-  const [organization, setOrganization] = useState<Organization>(sessionUser?.user.organization || {});
-  const [galleries, setGalleries] = useState<Gallery[]>(sessionUser?.user.galleries || []);
+  const { sessionUser, setSessionUser } = useSessionUserContext();
+  const [profile, setProfile] = useState<Profile>(sessionUser?.profile);
+  const [organization, setOrganization] = useState<Organization>(sessionUser?.organization);
+  const [galleries, setGalleries] = useState<Gallery[]>(sessionUser?.galleries || []);
   const [galleryEditing, setGalleryEditing] = useState<Gallery | null>(null);
 
   const { register: registrProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();
@@ -32,7 +32,7 @@ const ProfileUpdate: React.FC = () => {
       profileReset(profile);
     });
   }, []);
-  
+
   useEffect(() => {
     getOrganization(sessionUser?.user.id).then((organization) => {
       setOrganization(organization);
@@ -52,8 +52,8 @@ const ProfileUpdate: React.FC = () => {
     if (isValidProfile) {
       uploadProfile(data, sessionUser?.user.id).then((profile) => {
         if (profile) {
-          setProfile(profile)
-          setSessionUser({...sessionUser, ...{profile: profile}})
+          setProfile(profile);
+          setSessionUser({ ...sessionUser, ...{ profile: profile } });
         }
       })
     }
@@ -64,7 +64,7 @@ const ProfileUpdate: React.FC = () => {
       uploadOrganization(data, sessionUser?.user.id).then((organization) => {
         if (organization) {
           setOrganization(organization)
-          setSessionUser({...sessionUser, ...{organization: organization}})
+          setSessionUser({ ...sessionUser, ...{ organization: organization } });
         }
       })
     }
@@ -86,7 +86,7 @@ const ProfileUpdate: React.FC = () => {
             newGalleries.push(updatedGallery);
           }
           setGalleries([...newGalleries]);
-          setSessionUser({...sessionUser, ...{galleries: newGalleries}});
+          setSessionUser({ ...sessionUser, ...{ galleries: newGalleries } });
         }
       });
     }
@@ -109,8 +109,8 @@ const ProfileUpdate: React.FC = () => {
         if (error?.message) {
           console.log(error.message);
         } else if (galleries) {
-          setGalleries(galleries.filter((el) => { return el.id !== gallery.id && el}));
-          setSessionUser({...sessionUser, ...{galleries: galleries}});
+          setGalleries(galleries.filter((el) => { return el.id !== gallery.id && el }));
+          setSessionUser({ ...sessionUser, ...{ galleries: galleries } });
         }
       });
     }
@@ -121,36 +121,36 @@ const ProfileUpdate: React.FC = () => {
     setGalleryEditing(null);
   }
 
-  return <>{ sessionUser?.profile ? (
+  return <>{sessionUser?.profile ? (
     <>Edit your profile:</>
-      ) : <>
-      <h1>Hello there!</h1>
-      <h3>Until we start, we need some profile info from you:</h3>
-    </> }
-    <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} registr={registrProfile} errors={profileErrors}/>
+  ) : <>
+    <h1>Hello there!</h1>
+    <h3>Until we start, we need some profile info from you:</h3>
+  </>}
+    <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} registr={registrProfile} errors={profileErrors} />
 
-    { sessionUser && sessionUser?.organization ? (
-        <>Your organization</>
-      ) : (
-        <h1>Ok, now we need your organization</h1>
-      )
+    {sessionUser && sessionUser?.organization ? (
+      <>Your organization</>
+    ) : (
+      <h1>Ok, now we need your organization</h1>
+    )
     }
 
-    <OrganizationEditForm onReset={organizationReset}  organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} registr={registrOrganization} errors={organizationErrors}/>
+    <OrganizationEditForm onReset={organizationReset} organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} registr={registrOrganization} errors={organizationErrors} />
     <ul>
       {
         galleries.map((gallery, galleryKey) => (
           gallery?.id && galleryEditing?.id?.toString() !== gallery?.id.toString() ? (
             <li key={gallery.id}>
-              <p><button className="button button-s"  onClick={() => {handleDeleteClick(gallery) }}>delete</button><button  className="button button-s" onClick={() => {handleEditClick(gallery) }}>edit</button></p>
+              <p><button className="button button-s" onClick={() => { handleDeleteClick(gallery) }}>delete</button><button className="button button-s" onClick={() => { handleEditClick(gallery) }}>edit</button></p>
               <p>full name: {gallery?.fullName}</p>
               <p>name: {gallery?.name}</p>
               <p>description: {gallery?.description}</p>
               <p>address: {gallery?.address}</p>
-              <p>logo: <img src={gallery?.logoUrl}/></p>
+              <p>logo: <img src={gallery?.logoUrl} /></p>
             </li>
           ) : (
-            galleryEditing && <GalleryEditForm key={galleryKey} gallery={galleryEditing ?? null} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleResetGallery} registr={registrGallery} errors={galleryErrors}/>
+            galleryEditing && <GalleryEditForm key={galleryKey} gallery={galleryEditing ?? null} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleResetGallery} registr={registrGallery} errors={galleryErrors} />
           )
         ))
       }

@@ -10,7 +10,7 @@ import ProfileUpdate from "./pages/profile/ProfileUpdate";
 import NoPage from "./pages/NoPage";
 import Exhibition from "./pages/Exhibition";
 import useSessionUser from './hooks/useSessionUser';
-import './App.less'
+import "formir";
 
 import {
   SessionUserProvider,
@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: '/profile/update',
-    element: <ProfileUpdate/>,
+    element: <ProfileUpdate />,
   }
 ]
 
@@ -33,9 +33,9 @@ interface ProtectedRouteInterface {
 }
 
 const App: React.FC = () => {
-  const ProtectedRoute = ({ element } : ProtectedRouteInterface) => {
-    const {sessionUser} = useSessionUserContext();
-  
+  const ProtectedRoute = ({ element }: ProtectedRouteInterface) => {
+    const { sessionUser } = useSessionUserContext();
+
     return sessionUser ? element : <Navigate to="/login" />
   };
 
@@ -44,8 +44,8 @@ const App: React.FC = () => {
   };
 
   const completeCheck = () => {
-    const { sessionUser } = useSessionUser();
-    if ((sessionUser && sessionUser?.profile ) || !sessionUser ) {
+    const { sessionUser } = useSessionUserContext();
+    if ((sessionUser && sessionUser?.profile) || !sessionUser) {
       return [
         {
           path: '/',

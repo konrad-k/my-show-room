@@ -8,7 +8,8 @@ export default mode => {
   const env = loadEnv(mode, process.cwd(), "")
   return defineConfig({
     server: {
-      port: Number(env.APP_PORT)
+      port: Number(env.APP_PORT),
+      cors: false
     },
     base: './',
     plugins: [react(), splitVendorChunkPlugin(), EnvironmentPlugin('all')],

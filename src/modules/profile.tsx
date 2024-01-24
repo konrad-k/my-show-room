@@ -1,13 +1,30 @@
 import React from 'react';
-import { Profile } from "../models/profile.model";
+import { Profile as ProfileType } from "../models/profile.model";
 import { EditFormProps } from "./EditForm";
 
 interface profileEditFormProps extends EditFormProps {
-  profile: Profile;
+  profile: ProfileType;
+}
+
+export class Profile {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+  userId?: string;
+
+  constructor({ firstName, lastName }: ProfileType) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }
 
 export const ProfileEditForm: React.FC<profileEditFormProps> = props => {
-  const {profile, registr, errors, onSubmit, onReset} = props;
+  const { profile, registr, errors, onSubmit, onReset } = props;
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true}>
     <div className="row">
       <input type="text" placeholder="First Name" defaultValue={profile?.firstName}  {...registr("firstName", { required: true })} />
@@ -21,7 +38,7 @@ export const ProfileEditForm: React.FC<profileEditFormProps> = props => {
       <input type="text" placeholder="Avatar url" defaultValue={profile?.avatarUrl} {...registr("avatarUrl")} />
     </div>
     <div className="row">
-    <input type="submit" className="button button-primary" value="Save profile" />
+      <input type="submit" className="button button-primary" value="Save profile" />
     </div>
   </form>
 }
