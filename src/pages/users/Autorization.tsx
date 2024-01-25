@@ -65,24 +65,36 @@ const Autorization: React.FC = () => {
   }, [sessionUser]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="row">
-          <input type="email" placeholder="Email" defaultValue="" {...register("email")} />
-          {errors.email && <span>This field is required</span>}
-        </div>
-        <div className="row">
-          <input type="password" placeholder="Password" {...register("password", { required: true })} />
-          {errors.password && <span>This field is required</span>}
-        </div>
-        <div className="row">
-          <input type="submit" className="button button-primary" />
-        </div>
-      </form>
-      <p>
-        <a href="#/signup">Sign up</a>
-      </p>
-    </>
+    <div className="content-holder padding-top-4 grid justify-center">
+      <div className="cell-auto">
+        <h1 className="text-center">Log in</h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-form space-2 max-width-3">
+          <div className="row">
+            <label className="cell-6 label">E-mail:</label>
+            <div className="cell-10">
+              <input type="email" placeholder="Email" defaultValue="" {...register("email")} />
+              {errors.email && <span>This field is required</span>}
+            </div>
+          </div>
+          <div className="row">
+            <label></label>
+            <label className="cell-6 label">Password:</label>
+            <div className="cell-10">
+              <input type="password" placeholder="Password" {...register("password", { required: true })} />
+              {errors.password && <span>This field is required</span>}
+            </div>
+          </div>
+          <div className="cell-16">
+            <input type="submit" className="button width-100 button-primary" value="Login" />
+          </div>
+          <div className="cell-16">
+            <p className="text-center">
+              <a href="#/signup">Sign up</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
 
   );
 }

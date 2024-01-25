@@ -42,27 +42,53 @@ const Signup: React.FC = () => {
   }, [sessionUser]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate={true}>
-      <div className="row">
-        <input type="email" placeholder="Email" defaultValue="" {...register("email", { required: true })} />
-        {errors.email && <span>This field is required</span>}
+    <div className="content-holder padding-top-4 grid justify-center">
+      <div className="cell-auto">
+        <h1 className="text-center">Sign up</h1>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate={true} className="grid grid-form space-2 max-width-3">
+          <div className="row">
+            <label className="cell-6 label">E-mail:</label>
+            <div className="cell-10">
+              <input type="email" placeholder="Email" defaultValue="" {...register("email", { required: true })} />
+              {errors.email && <span>This field is required</span>}
+
+            </div>
+          </div>
+          <div className="row">
+            <label className="cell-6 label">E-mail repeat:</label>
+            <div className="cell-10">
+              <input type="email" placeholder="Email repeat" defaultValue="" {...register("emailConfirm", { required: true, validate: (value) => value === getValues("email") || "email don't match" })} />
+              {errors.email && <span>This field is required</span>}
+
+            </div>
+          </div>
+          <div className="row">
+            <label className="cell-6 label">Password:</label>
+            <div className="cell-10">
+              <input type="password" placeholder="Password" {...register("password", { required: true })} />
+              {errors.password && <span>This field is required</span>}
+
+            </div>
+          </div>
+          <div className="row">
+            <label className="cell-6 label">Password repeat:</label>
+            <div className="cell-10">
+              <input type="password" placeholder="Password repeat" {...register("passwordConfirm", { required: true, validate: (value) => value === getValues("password") || "password don't match" })} />
+              {errors.password && <span>This field is required</span>}
+
+            </div>
+            <div className="cell-16">
+              <input type="submit" className="button button-primary" value="Registr" />
+            </div>
+          </div>
+          <div className="cell-16">
+            <p className="text-center">
+              <a href="#/login">Log in</a>
+            </p>
+          </div>
+        </form>
       </div>
-      <div className="row">
-        <input type="email" placeholder="Email repeat" defaultValue="" {...register("emailConfirm", { required: true, validate: (value) => value === getValues("email") || "email don't match" })} />
-        {errors.email && <span>This field is required</span>}
-      </div>
-      <div className="row">
-        <input type="password" placeholder="Password" {...register("password", { required: true })} />
-        {errors.password && <span>This field is required</span>}
-      </div>
-      <div className="row">
-        <input type="password" placeholder="Password repeat" {...register("passwordConfirm", { required: true, validate: (value) => value === getValues("password") || "password don't match" })} />
-        {errors.password && <span>This field is required</span>}
-      </div>
-      <div className="row">
-        <input type="submit" className="button button-primary" />
-      </div>
-    </form>
+    </div>
   );
 }
 
