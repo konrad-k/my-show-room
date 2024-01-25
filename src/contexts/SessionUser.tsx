@@ -11,14 +11,14 @@ export type SessionUser = {
   expires_at: number,
   session: Session,
   email: string,
-  user: User,
-  profile: Profile,
-  organization: Organization
+  user?: User,
+  profile?: Profile,
+  organization?: Organization
 }
 
 type SessionUserContextType = {
   sessionUser?: SessionUser,
-  setSessionUser: (user: User) => void
+  setSessionUser: (user: SessionUser) => void
 }
 
 export const SessionUserContext = React.createContext<SessionUserContextType>({} as SessionUserContextType);

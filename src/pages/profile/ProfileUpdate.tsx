@@ -19,7 +19,7 @@ const ProfileUpdate: React.FC = () => {
   const { sessionUser, setSessionUser } = useSessionUserContext();
   const [profile, setProfile] = useState<Profile>(sessionUser?.profile);
   const [organization, setOrganization] = useState<Organization>(sessionUser?.organization);
-  const [galleries, setGalleries] = useState<Gallery[]>(sessionUser?.galleries || []);
+  const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [galleryEditing, setGalleryEditing] = useState<Gallery | null>(null);
 
   const { register: registrProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();

@@ -3,6 +3,7 @@ import { useSessionUserContext } from '../contexts/SessionUser';
 import { Profile } from '../modules/profile';
 import { getGalleries } from '../services/gallery';
 import { GalleryTile } from '../modules/gallery';
+import { Navigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const { sessionUser } = useSessionUserContext();
@@ -12,6 +13,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     getGalleries(sessionUser?.user.id).then(({ galleries }) => setGalleries(galleries));
   }, [sessionUser, galleries]);
+
+  if (!profile.firstName || !profile.lastName) {
+    return <Navigate to="/profile/update" />;
+  }
 
   return <>
     <h1>Hello {profile.fullName() || 'art lover'}</h1>

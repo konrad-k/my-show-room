@@ -9,7 +9,6 @@ import Dashboard from "./pages/Dashboard";
 import ProfileUpdate from "./pages/profile/ProfileUpdate";
 import NoPage from "./pages/NoPage";
 import Exhibition from "./pages/Exhibition";
-import useSessionUser from './hooks/useSessionUser';
 import "formir";
 
 import {
@@ -19,7 +18,7 @@ import {
 
 const routes = [
   {
-    path: '',
+    path: '/',
     element: <Dashboard />,
   },
   {
@@ -27,6 +26,7 @@ const routes = [
     element: <ProfileUpdate />,
   }
 ]
+
 
 interface ProtectedRouteInterface {
   element: JSX.Element
@@ -39,52 +39,35 @@ const App: React.FC = () => {
     return sessionUser ? element : <Navigate to="/login" />
   };
 
-  const ProfileRoute = () => {
-    return <Navigate to="/profile/update" />;
-  };
 
   const completeCheck = () => {
-    const { sessionUser } = useSessionUserContext();
-    if ((sessionUser && sessionUser?.profile) || !sessionUser) {
-      return [
-        {
-          path: '/',
-          element: <ProtectedRoute element={<Layout />} />,
-          children: routes,
-        },
-        {
-          path: 'login',
-          element: <Autorization />,
-        },
-        {
-          path: 'signup',
-          element: <Signup />,
-        },
-        {
-          path: 'logout',
-          element: <Logout />,
-        },
-        {
-          path: 'exhibitions/:id',
-          element: <Exhibition />,
-        },
-        {
-          path: '*',
-          element: <NoPage />,
-        },
-      ]
-    } else {
-      return [
-        {
-          path: '*',
-          element: <ProfileRoute />,
-        },
-        {
-          path: '/profile/update',
-          element: <ProfileUpdate />,
-        },
-      ]
-    }
+    return [
+      {
+        path: '/',
+        element: <ProtectedRoute element={<Layout />} />,
+        children: routes,
+      },
+      {
+        path: 'logout',
+        element: <Logout />,
+      },
+      {
+        path: 'login',
+        element: <Autorization />,
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
+      },
+      {
+        path: 'exhibitions/:id',
+        element: <Exhibition />,
+      },
+      {
+        path: '*',
+        element: <NoPage />,
+      },
+    ]
   }
 
   const router = createHashRouter(completeCheck());

@@ -6,7 +6,7 @@ export default function useSessionUser() {
     return userFromStorage && JSON.parse(userFromStorage);
   };
 
-  const [sessionUser, setSessionUser] = useState(getUser());
+  const [sessionUser, setSessionUser] = useState(getUser() || null);
 
   const saveUser = (user: any) => {
     localStorage.setItem('user', JSON.stringify(user));

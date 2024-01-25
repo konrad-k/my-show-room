@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Signup: React.FC = () => {
-  const {sessionUser, setSessionUser} = useSessionUserContext();
+  const { sessionUser, setSessionUser } = useSessionUserContext();
   const navigate = useNavigate();
   const { register, handleSubmit, getValues, formState: { errors } } = useForm();
   const onSubmit = () => {
-    signUp(getValues('email'), getValues('password'))
+    return signUp(getValues('email'), getValues('password'))
   }
 
   async function signUp(email = '', password = '') {
@@ -19,16 +19,19 @@ const Signup: React.FC = () => {
         email: email,
         password: password,
       }).then((response) => {
-        const { data } = response
-        if (data?.session && data?.user) {
+        const { data, error } = response;
+        if (error) {
+          alert(error);
+        } else if (data?.session && data?.user) {
           setSessionUser({
             id: data.session.user.id,
             access_token: data.session.access_token,
             expires_at: data.session.expires_at,
             session: data.session,
             email: data.user.email,
-            user: data.user
+            user: { id: data.user.id, email: data.user.email }
           })
+          return true;
         }
       });
     return false;
@@ -57,7 +60,7 @@ const Signup: React.FC = () => {
         {errors.password && <span>This field is required</span>}
       </div>
       <div className="row">
-      <input type="submit" className="button button-primary" />
+        <input type="submit" className="button button-primary" />
       </div>
     </form>
   );
