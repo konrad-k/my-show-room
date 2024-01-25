@@ -3201,8 +3201,10 @@ rollup@^3.27.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-room-gallery@../formir-plugin-room-gallery:
-  version "1.2.0"
+room-gallery@^1.2.0-dev:
+  version "1.2.0-dev"
+  resolved "https://registry.yarnpkg.com/room-gallery/-/room-gallery-1.2.0-dev.tgz#8ba1065e359368b30b3fe552ef5fd8a56fc49619"
+  integrity sha512-dyXM8ueRsECcTrMf/6eQk0a4YPeWLKRx96f25sELyZdPm+IbIhOzt5hEKVVLwheU6Igv3viWf/lnPJ/O2tea8Q==
   dependencies:
     dompurify "^3.0.5"
     react-swipeable "^7.0.1"

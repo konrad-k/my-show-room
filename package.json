@@ -25,7 +25,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.10.0",
-    "room-gallery": "../formir-plugin-room-gallery",
+    "room-gallery": "^1.2.0-dev",
     "snakecase-keys": "^5.4.6",
     "vite-plugin-environment": "^1.1.3",
     "yarn": "^1.22.21"
