@@ -7,23 +7,35 @@ interface organizationEditFormProps extends EditFormProps {
 }
 
 export const OrganizationEditForm: React.FC<organizationEditFormProps> = props => {
-  const {organization, registr, errors, onSubmit, onReset} = props;
-  return <form onSubmit={onSubmit} onReset={onReset} noValidate={true}>
+  const { organization, registr, errors, onSubmit, onReset } = props;
+  return <form onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     <div className="row">
-      <input type="text" placeholder="Full Name" defaultValue={organization?.fullName} {...registr("fullName", { required: true })} />
-      {errors.firstName && <span>This field is required</span>}
+      <label className="cell-6 label">Full Name:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Full Name" defaultValue={organization?.fullName} {...registr("fullName", { required: true })} />
+        {errors.fullName && <span>This field is required</span>}
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="Name" defaultValue={organization?.name} {...registr("name")} />
+      <label className="cell-6 label">Name:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Name" defaultValue={organization?.name} {...registr("name")} />
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="Website" defaultValue={organization?.website} {...registr("website")} />
+      <label className="cell-6 label">Website:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Website" defaultValue={organization?.website} {...registr("website")} />
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="Avatar url" defaultValue={organization?.avatarUrl} {...registr("avatarUrl")} />
+      <label className="cell-6 label">Avatar url:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Avatar url" defaultValue={organization?.avatarUrl} {...registr("avatarUrl")} />
+      </div>
     </div>
     <div className="row">
-    <input type="submit" className="button button-primary" value="Save" />
+      <input type="submit" className="button button-primary" value="Save" />
     </div>
   </form>
 }

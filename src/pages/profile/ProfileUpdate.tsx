@@ -15,6 +15,8 @@ import { getOrganization, uploadOrganization } from "../../services/organization
 import { ProfileEditForm } from "../../modules/profile";
 import { getProfile, uploadProfile } from "../../services/profile";
 
+const galleryLimit = process.env.GALLERY_LIMIT;
+
 const ProfileUpdate: React.FC = () => {
   const { sessionUser, setSessionUser } = useSessionUserContext();
   const [profile, setProfile] = useState<Profile>(sessionUser?.profile);
@@ -24,7 +26,7 @@ const ProfileUpdate: React.FC = () => {
 
   const { register: registrProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();
   const { register: registrOrganization, handleSubmit: handleSubmitOrganization, formState: { errors: organizationErrors, isValid: isValidOrganization }, reset: organizationReset } = useForm();
-  const { register: registrGallery, handleSubmit: handleSubmitGallery, formState: { errors: galleryErrors, isValid: isValidGallery }, reset: galleryReset } = useForm();
+  const { register: registrGallery, handleSubmit: handleSubmitGallery, formState: { errors: galleryErrors, isValid: isValidGallery }, reset: galleryReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     getProfile(sessionUser?.user.id).then((profile) => {
@@ -75,32 +77,37 @@ const ProfileUpdate: React.FC = () => {
       uploadGallery(data, sessionUser?.user.id).then(({ gallery: updatedGallery, error }) => {
         if (error?.message) {
           console.log(error.message);
-        } else if (galleries?.length) {
-          setGalleryEditing(null);
+        } else {
           galleryReset();
-          let newGalleries = galleries;
-
-          if (data?.id.toString() === updatedGallery.id?.toString()) {
-            newGalleries = galleries.map((el) => { return el.id === updatedGallery.id ? updatedGallery : el });
-          } else {
-            newGalleries.push(updatedGallery);
+          setGalleryEditing(null);
+          if (galleries?.length) {
+            let newGalleries = galleries;
+            if (data?.id?.toString() === updatedGallery.id?.toString()) {
+              newGalleries = galleries.map((el) => { return el.id === updatedGallery.id ? updatedGallery : el });
+            } else {
+              newGalleries.push(updatedGallery);
+            }
+            setGalleries([...newGalleries]);
+            setSessionUser({ ...sessionUser, ...{ galleries: newGalleries } });
           }
-          setGalleries([...newGalleries]);
-          setSessionUser({ ...sessionUser, ...{ galleries: newGalleries } });
         }
       });
     }
   }
 
   const handleAddGallery = () => {
-    setGalleries([...galleries, {} as Gallery]);
+    galleryReset({});
     setGalleryEditing({} as Gallery);
-    galleryReset();
   }
 
   const handleEditClick = (gallery: Gallery) => {
-    setGalleryEditing(gallery);
     galleryReset(gallery);
+    setGalleryEditing(gallery);
+  }
+
+  const handleGalleryReset = () => {
+    galleryReset({});
+    setGalleryEditing(null);
   }
 
   const handleDeleteClick = (data: Gallery) => {
@@ -116,49 +123,77 @@ const ProfileUpdate: React.FC = () => {
     }
   }
 
-  const handleResetGallery = () => {
-    setGalleries([...galleries.filter((g) => g?.id)] as Gallery[]);
-    setGalleryEditing(null);
-  }
-
-  return <>{sessionUser?.profile ? (
-    <>Edit your profile:</>
+  return <div className="profile">{sessionUser?.profile ? (
+    <h2>Profile</h2>
   ) : <>
     <h1>Hello there!</h1>
-    <h3>Until we start, we need some profile info from you:</h3>
+    <h2>Until we start, we need some profile info from you:</h2>
   </>}
     <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} registr={registrProfile} errors={profileErrors} />
-
+    <hr className="margin-top-4" />
     {sessionUser && sessionUser?.organization ? (
-      <>Your organization</>
+      <h2>Organization</h2>
     ) : (
       <h1>Ok, now we need your organization</h1>
     )
     }
-
     <OrganizationEditForm onReset={organizationReset} organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} registr={registrOrganization} errors={organizationErrors} />
-    <ul>
-      {
-        galleries.map((gallery, galleryKey) => (
-          gallery?.id && galleryEditing?.id?.toString() !== gallery?.id.toString() ? (
-            <li key={gallery.id}>
-              <p><button className="button button-s" onClick={() => { handleDeleteClick(gallery) }}>delete</button><button className="button button-s" onClick={() => { handleEditClick(gallery) }}>edit</button></p>
-              <p>full name: {gallery?.fullName}</p>
-              <p>name: {gallery?.name}</p>
-              <p>description: {gallery?.description}</p>
-              <p>address: {gallery?.address}</p>
-              <p>logo: <img src={gallery?.logoUrl} /></p>
-            </li>
-          ) : (
-            galleryEditing && <GalleryEditForm key={galleryKey} gallery={galleryEditing ?? null} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleResetGallery} registr={registrGallery} errors={galleryErrors} />
-          )
-        ))
-      }
-    </ul>
+    <hr className="margin-top-4" />
+    <h2>Galleries</h2>
     {
-      (typeof galleries?.findLast(() => true)?.id !== 'undefined' || galleries.length === 0) && <button onClick={handleAddGallery} className="button">Add new gallery</button>
+      galleries.map((gallery, galleryKey) => (
+        galleryEditing && galleryEditing.id === gallery.id ? (
+          <div key={gallery.id} className="section with-padding gallery gallery-form">
+            <div className="section-header">edit: {galleryEditing.name}</div>
+            <div className="section-content">
+              <GalleryEditForm key={galleryKey} gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} registr={registrGallery} errors={galleryErrors} />
+            </div>
+          </div>
+        ) : (
+          <div className="section with-padding gallery-info">
+            <div className="section-content">
+              <div key={gallery.id} className="grid grid-form space-2">
+                <div className="row">
+                  <div className="cell-16 items items-end">
+                    <button className="button button-s button-danger" onClick={() => { handleDeleteClick(gallery) }}>Delete</button>
+                    <button className="button button-s" onClick={() => { handleEditClick(gallery) }}>Edit</button>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="cell-16">{gallery?.logoUrl && <img src={gallery?.logoUrl} />}</div>
+                </div>
+                <div className="row">
+                  <div className="cell-16">{gallery?.fullName}</div>
+                </div>
+                <div className="row">
+                  <div className="cell-16">{gallery?.name}</div>
+                </div>
+                <div className="row">
+                  <div className="cell-16">{gallery?.description}</div>
+                </div>
+                <div className="row">
+                  <div className="cell-16"><address>{gallery?.address}</address></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      ))
     }
-  </>
+    {
+      galleryEditing && !galleryEditing.id ? (
+        <div key="new" className="section with-padding gallery gallery-form">
+          <div className="section-header">New Gallery</div>
+          <div className="section-content">
+            <GalleryEditForm gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} registr={registrGallery} errors={galleryErrors} />
+          </div>
+        </div>
+      ) : null
+    }
+    {
+      !galleryEditing && galleries.length < parseInt(galleryLimit) && <button onClick={handleAddGallery} className="button">Add new gallery</button>
+    }
+  </div>
 }
 
 export default ProfileUpdate;

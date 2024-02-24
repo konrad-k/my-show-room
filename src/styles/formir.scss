@@ -1,2 +1,87 @@
-@import "formir/scss/formir";
-@import "formir/setup/variables";
+/*!
+ *  Formir 1.1.0 by @formir - https://github.com/formir/formir - http://formir.io - support@formir.io
+ *  MIT License
+ */
+
+// SETUP
+@import "formir/src/scss/setup/classes";
+@import "formir/src/scss/setup/core";
+@import "formir/src/scss/setup/variables";
+
+//// THEME SETUP
+@import "formir/src/scss/themes/default/setup/classes";
+@import "formir/src/scss/themes/default/setup/core";
+@import "./formir/setup/variables";
+
+// CORE
+//// MIXINS
+@import "formir/src/scss/core/mixins/display";
+@import "formir/src/scss/core/mixins/flex";
+@import "formir/src/scss/core/mixins/functions";
+
+
+// THEMES
+//// DEFAULT
+////// LAYOUTS
+@import "formir/src/scss/themes/default/layouts/side";
+
+////// COMPONENTS
+@import "formir/src/scss/themes/default/components/modal";
+@import "formir/src/scss/themes/default/components/tab";
+@import "formir/src/scss/themes/default/components/tooltip";
+@import "formir/src/scss/themes/default/components/chart";
+@import "formir/src/scss/themes/default/components/accordion";
+@import "formir/src/scss/themes/default/components/popup";
+@import "formir/src/scss/themes/default/components/menu";
+@import "formir/src/scss/themes/default/components/select";
+@import "formir/src/scss/themes/default/components/button";
+@import "formir/src/scss/themes/default/components/form";
+@import "formir/src/scss/themes/default/components/table";
+@import "formir/src/scss/themes/default/components/alert";
+
+////// TYPOGRAPHY
+@import "formir/src/scss/themes/default/typography/heading";
+@import "formir/src/scss/themes/default/typography/article";
+
+
+//// COMPONENTS
+@import "formir/src/scss/core/components/icons";
+@import "formir/src/scss/core/components/form";
+@import "formir/src/scss/core/components/select";
+@import "formir/src/scss/core/components/modal";
+@import "formir/src/scss/core/components/tab";
+@import "formir/src/scss/core/components/accordion";
+@import "formir/src/scss/core/components/button";
+@import "formir/src/scss/core/components/chart";
+@import "formir/src/scss/core/components/description-list";
+@import "formir/src/scss/core/components/menu";
+@import "formir/src/scss/core/components/table";
+@import "formir/src/scss/core/components/tooltip";
+@import "formir/src/scss/core/components/popup";
+@import "formir/src/scss/core/components/section";
+@import "formir/src/scss/core/components/alert";
+
+//// HELPER
+@import "formir/src/scss/core/helpers/align";
+@import "formir/src/scss/core/helpers/display";
+@import "formir/src/scss/core/helpers/items";
+@import "formir/src/scss/core/helpers/toggle";
+
+//// Typography
+@import "formir/src/scss/core/typography/fonts";
+@import "formir/src/scss/core/typography/heading";
+@import "formir/src/scss/core/typography/list";
+@import "formir/src/scss/core/typography/article";
+@import "formir/src/scss/core/typography/color";
+@import "formir/src/scss/core/typography/link";
+
+//// LAYOUTS
+@import "formir/src/scss/core/layouts/clear";
+@import "formir/src/scss/core/layouts/grid";
+@import "formir/src/scss/core/layouts/content";
+@import "./formir/core/layouts/header";
+@import "formir/src/scss/core/layouts/side";
+@import "formir/src/scss/core/layouts/window";
+@import "formir/src/scss/core/layouts/dimensions"; // width, height, margin, padding etc.
+
+@import "./formir/core/layouts/dimensions";

@@ -23,31 +23,49 @@ export const GalleryTile: React.FC<GalleryProps> = ({ gallery }) => {
 
 export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, registr, errors, onSubmit, onReset }) => {
   const id = gallery?.id;
-  return <form onSubmit={onSubmit} onReset={onReset} noValidate={true}>
-    {gallery?.id && <input type="hidden" defaultValue={id} {...registr("id")} />}
+  return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
+    {id && <input type="hidden" {...registr("id")} />}
     <div className="row">
-      <input type="text" placeholder="Full Name" defaultValue={gallery?.fullName} {...registr("fullName", { required: true })} />
-      {errors.fullName && <span>This field is required</span>}
+      <label className="cell-6 label">Full Name:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Full Name" {...registr("fullName", { required: true })} />
+        {errors.fullName && <span>This field is required</span>}
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="Name" defaultValue={gallery?.name} {...registr("name", { required: true })} />
-      {errors.name && <span>This field is required</span>}
+      <label className="cell-6 label">Name:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="Name" {...registr("name", { required: true })} />
+        {errors.name && <span>This field is required</span>}
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="description" defaultValue={gallery?.description} {...registr("description")} />
+      <label className="cell-6 label">Description:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="description" {...registr("description")} />
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="address" defaultValue={gallery?.address} {...registr("address")} />
+      <label className="cell-6 label">Address:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="address" {...registr("address")} />
+      </div>
     </div>
     <div className="row">
-      <input type="text" placeholder="logoUrl" defaultValue={gallery?.logoUrl} {...registr("logoUrl")} />
+      <label className="cell-6 label">Logo URL:</label>
+      <div className="cell-10">
+        <input type="text" placeholder="logoUrl" {...registr("logoUrl")} />
+      </div>
     </div>
     <div className="row">
-      <textarea placeholder="style" defaultValue={gallery?.style?.toString() || ''} {...registr("style")} />
+      <label className="cell-6 label">Style:</label>
+      <div className="cell-10">
+        <textarea placeholder="style" {...registr("style")} />
+      </div>
     </div>
-    <div className="row">
-      <input type="submit" className="button button-primary" value="Save" />
-      <input type="reset" className="button button-mute" value="Cancel" />
+    <div className="row items items-end">
+      <input type="submit" className="button button-primary button-s" value="Save" />
+      <input type="reset" className="button button-mute button-s" value="Cancel" />
     </div>
   </form>
 }

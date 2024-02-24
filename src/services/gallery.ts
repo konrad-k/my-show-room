@@ -6,7 +6,7 @@ import { FieldValues } from "react-hook-form";
 
 export const uploadGallery = async (data: FieldValues, userId: string) => {
   const uploadData = { userId: userId, ...data }
-  const { data: galleries, error } = await api!.from('galleries').upsert(snakecaseKeys(uploadData)).eq(data.id ? 'id' : 'user_id', data.id ? data.id : userId).eq('status', 'active')
+  const { data: galleries, error } = await api!.from('galleries').upsert(snakecaseKeys(uploadData)).eq((data && data.id) ? 'id' : 'user_id', (data && data.id) ? data.id : userId).eq('status', 'active')
     .select();
   return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
 }

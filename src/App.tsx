@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import ProfileUpdate from "./pages/profile/ProfileUpdate";
 import NoPage from "./pages/NoPage";
 import Exhibition from "./pages/Exhibition";
-import "formir";
+import "./App.scss";
 
 import {
   SessionUserProvider,
