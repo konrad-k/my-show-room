@@ -13,10 +13,7 @@ const Layout: React.FC = () => {
                   <Link className="anchor" to="/">Home</Link>
                 </li>
                 <li className="item">
-                  <Link className="anchor" to="/exhibitions/1">Exhibition</Link>
-                </li>
-                <li className="item">
-                  <Link className="anchor" to="/profile/update">Profile settings</Link>
+                  <Link className="anchor" to="/profile">Profile</Link>
                 </li>
                 <li className="item margin-left-auto margin-right-0">
                   <Link className="anchor" to="/logout">Logout</Link>

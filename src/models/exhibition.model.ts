@@ -1,11 +1,12 @@
-export type Gallery = {
+export type Exhibition = {
   id?: string;
-  userId?: string;
+  galleryId?: string;
   createdAt?: string;
   fullName: string;
   name: string;
   description: string;
   address: string;
-  logoUrl: string;
-  style: JSON;
+  startAt: Date;
+  endAt: Date;
+  posterUrl: string;
 }

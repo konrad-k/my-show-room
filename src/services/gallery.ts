@@ -11,7 +11,7 @@ export const uploadGallery = async (data: FieldValues, userId: string) => {
   return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
 }
 
-export const deleteGallery = async (id: number, userId: string) => {
+export const deleteGallery = async (id: string, userId: string) => {
   const { data: galleries, error } = await api!.from('galleries').update({ status: 'deleted' }).eq('id', id).eq('user_id', userId).eq('status', 'active')
     .select();
 
@@ -24,10 +24,10 @@ export const getGalleries = async (userId: string) => {
   return { galleries: camelcaseKeys(galleries ?? [] as Gallery[]), error: error }
 }
 
-export const getGallery = async (id: number) => {
-  const { data: galleries, error } = await api!.from('galleries').select().eq('id', id).eq('status', 'active');
+export const getGallery = async (id: string, userId?: string) => {
+  const { data: galleries, error } = await api!.from('galleries').select().eq('id', id).eq('status', 'active')[userId ? 'eq' : null]('user_id', userId);
 
-  return { galleries: returnOneGallery(galleries as Gallery[]), error: error };
+  return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
 }
 
 function returnOneGallery(galleries: Gallery[]) {

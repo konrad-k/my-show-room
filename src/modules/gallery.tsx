@@ -12,12 +12,45 @@ interface GalleryEditFormProps extends EditFormProps {
   gallery: Gallery | null;
 }
 
+interface GalleryEditInfoProps {
+  gallery: Gallery | null;
+  handleDeleteClick: (gallery) => void
+  handleEditClick: (gallery) => void
+}
+
 export const GalleryTile: React.FC<GalleryProps> = ({ gallery }) => {
   const id = gallery?.id;
   return <div className="cell">
     <Link className="section display-block" to={`/exhibitions/${id}`}>
       <img src={gallery?.logoUrl} alt={gallery?.name} />
     </Link>
+  </div>
+}
+
+export const GalleryEditInfo: React.FC<GalleryEditInfoProps> = ({ gallery, handleDeleteClick, handleEditClick }) => {
+  return <div key={gallery.id} className="grid grid-form space-2">
+    <div className="row">
+      <div className="cell-16 items items-end">
+        <Link to={`/profile/galleries/${gallery.id}`}>Exibitions</Link>
+        <button className="button button-s button-danger" onClick={() => { handleDeleteClick(gallery) }}>Delete</button>
+        <button className="button button-s" onClick={() => { handleEditClick(gallery) }}>Edit</button>
+      </div>
+    </div>
+    <div className="row">
+      <div className="cell-16">{gallery?.logoUrl && <img src={gallery?.logoUrl} />}</div>
+    </div>
+    <div className="row">
+      <div className="cell-16">{gallery?.fullName}</div>
+    </div>
+    <div className="row">
+      <div className="cell-16">{gallery?.name}</div>
+    </div>
+    <div className="row">
+      <div className="cell-16">{gallery?.description}</div>
+    </div>
+    <div className="row">
+      <div className="cell-16"><address>{gallery?.address}</address></div>
+    </div>
   </div>
 }
 

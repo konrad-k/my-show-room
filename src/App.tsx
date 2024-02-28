@@ -6,7 +6,9 @@ import Autorization from "./pages/users/Autorization";
 import Signup from "./pages/users/Signup";
 import Logout from "./pages/users/Logout";
 import Dashboard from "./pages/Dashboard";
-import ProfileUpdate from "./pages/profile/ProfileUpdate";
+import ProfileIndex from "./pages/profile/ProfileIndex";
+import ProfileGallery from "./pages/profile/ProfileGallery";
+import ProfileExhibition from "./pages/profile/ProfileExhibition";
 import NoPage from "./pages/NoPage";
 import Exhibition from "./pages/Exhibition";
 import "./App.scss";
@@ -22,9 +24,17 @@ const routes = [
     element: <Dashboard />,
   },
   {
-    path: '/profile/update',
-    element: <ProfileUpdate />,
-  }
+    path: '/profile',
+    element: <ProfileIndex />,
+  },
+  {
+    path: 'profile/galleries/:id',
+    element: <ProfileGallery />,
+  },
+  {
+    path: 'profile/exhibitions/:id',
+    element: <ProfileExhibition />,
+  },
 ]
 
 

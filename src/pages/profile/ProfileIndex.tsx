@@ -6,7 +6,7 @@ import { Gallery } from "../../models/gallery.model";
 import { Organization } from "../../models/organization.model";
 import { Profile } from "../../models/profile.model";
 
-import { GalleryEditForm } from "../../modules/gallery";
+import { GalleryEditForm, GalleryEditInfo } from "../../modules/gallery";
 import { uploadGallery, deleteGallery, getGalleries } from "../../services/gallery";
 
 import { OrganizationEditForm } from "../../modules/organization";
@@ -17,7 +17,7 @@ import { getProfile, uploadProfile } from "../../services/profile";
 
 const galleryLimit = process.env.GALLERY_LIMIT;
 
-const ProfileUpdate: React.FC = () => {
+const ProfileIndex: React.FC = () => {
   const { sessionUser, setSessionUser } = useSessionUserContext();
   const [profile, setProfile] = useState<Profile>(sessionUser?.profile);
   const [organization, setOrganization] = useState<Organization>(sessionUser?.organization);
@@ -82,13 +82,16 @@ const ProfileUpdate: React.FC = () => {
           setGalleryEditing(null);
           if (galleries?.length) {
             let newGalleries = galleries;
-            if (data?.id?.toString() === updatedGallery.id?.toString()) {
+            if (data?.id === updatedGallery.id) {
               newGalleries = galleries.map((el) => { return el.id === updatedGallery.id ? updatedGallery : el });
             } else {
               newGalleries.push(updatedGallery);
             }
             setGalleries([...newGalleries]);
             setSessionUser({ ...sessionUser, ...{ galleries: newGalleries } });
+          } else {
+            setGalleries([updatedGallery]);
+            setSessionUser({ ...sessionUser, ...{ galleries: [updatedGallery] } });
           }
         }
       });
@@ -100,7 +103,7 @@ const ProfileUpdate: React.FC = () => {
     setGalleryEditing({} as Gallery);
   }
 
-  const handleEditClick = (gallery: Gallery) => {
+  const handleEditGalleryClick = (gallery: Gallery) => {
     galleryReset(gallery);
     setGalleryEditing(gallery);
   }
@@ -110,7 +113,7 @@ const ProfileUpdate: React.FC = () => {
     setGalleryEditing(null);
   }
 
-  const handleDeleteClick = (data: Gallery) => {
+  const handleDeleteGalleryClick = (data: Gallery) => {
     if (data.id) {
       deleteGallery(data.id, sessionUser?.user.id).then(({ gallery, error }) => {
         if (error?.message) {
@@ -152,29 +155,7 @@ const ProfileUpdate: React.FC = () => {
         ) : (
           <div className="section with-padding gallery-info">
             <div className="section-content">
-              <div key={gallery.id} className="grid grid-form space-2">
-                <div className="row">
-                  <div className="cell-16 items items-end">
-                    <button className="button button-s button-danger" onClick={() => { handleDeleteClick(gallery) }}>Delete</button>
-                    <button className="button button-s" onClick={() => { handleEditClick(gallery) }}>Edit</button>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="cell-16">{gallery?.logoUrl && <img src={gallery?.logoUrl} />}</div>
-                </div>
-                <div className="row">
-                  <div className="cell-16">{gallery?.fullName}</div>
-                </div>
-                <div className="row">
-                  <div className="cell-16">{gallery?.name}</div>
-                </div>
-                <div className="row">
-                  <div className="cell-16">{gallery?.description}</div>
-                </div>
-                <div className="row">
-                  <div className="cell-16"><address>{gallery?.address}</address></div>
-                </div>
-              </div>
+              <GalleryEditInfo gallery={gallery} handleDeleteClick={handleDeleteGalleryClick} handleEditClick={handleEditGalleryClick} />
             </div>
           </div>
         )
@@ -196,4 +177,4 @@ const ProfileUpdate: React.FC = () => {
   </div>
 }
 
-export default ProfileUpdate;
+export default ProfileIndex;

@@ -73,7 +73,7 @@ const Autorization: React.FC = () => {
             <label className="cell-6 label">E-mail:</label>
             <div className="cell-10">
               <input type="email" placeholder="Email" defaultValue="" {...register("email")} />
-              {errors.email && <span>This field is required</span>}
+              {errors.email && <span>{errors.email.toString()}</span>}
             </div>
           </div>
           <div className="row">
@@ -81,7 +81,7 @@ const Autorization: React.FC = () => {
             <label className="cell-6 label">Password:</label>
             <div className="cell-10">
               <input type="password" placeholder="Password" {...register("password", { required: true })} />
-              {errors.password && <span>This field is required</span>}
+              {errors.password && <span>{errors.password.message.toString()}</span>}
             </div>
           </div>
           <div className="cell-16">
@@ -92,6 +92,7 @@ const Autorization: React.FC = () => {
               <a href="#/signup">Sign up</a>
             </p>
           </div>
+          <p><small>auth for test only:<br />kubrakkonrad@gmail.com / 74tBbCA87Y6AFQw</small></p>
         </form>
       </div>
     </div>
