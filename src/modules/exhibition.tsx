@@ -1,11 +1,13 @@
 import React from 'react';
 import { Exhibition } from "../models/exhibition.model";
+import { Gallery } from "../models/gallery.model";
 import { EditFormProps } from "./EditForm";
 import { Link } from "react-router-dom"
 
 
 interface ExhibitionProps {
   exhibition: Exhibition;
+  gallery?: Gallery;
 }
 
 interface ExhibitionEditFormProps extends EditFormProps {
@@ -18,10 +20,9 @@ interface ExhibitionEditInfoProps {
   handleEditClick: (exhibition) => void
 }
 
-export const ExhibitionTile: React.FC<ExhibitionProps> = ({ exhibition }) => {
-  const id = exhibition?.id;
+export const ExhibitionTile: React.FC<ExhibitionProps> = ({ exhibition, gallery }) => {
   return <div className="cell">
-    <Link className="section display-block" to={`/exhibitions/${id}`}>
+    <Link className="section display-block" to={`/${gallery?.name || 'test'}/${exhibition.id}`}>
       <img src={exhibition?.posterUrl} alt={exhibition?.name} />
     </Link>
   </div>

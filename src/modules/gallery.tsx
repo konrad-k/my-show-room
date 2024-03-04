@@ -19,9 +19,8 @@ interface GalleryEditInfoProps {
 }
 
 export const GalleryTile: React.FC<GalleryProps> = ({ gallery }) => {
-  const id = gallery?.id;
   return <div className="cell">
-    <Link className="section display-block" to={`/exhibitions/${id}`}>
+    <Link className="section display-block" to={`/${gallery.name}`}>
       <img src={gallery?.logoUrl} alt={gallery?.name} />
     </Link>
   </div>

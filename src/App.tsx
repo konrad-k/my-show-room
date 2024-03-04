@@ -1,6 +1,7 @@
 import React from 'react';
 import { createHashRouter, RouterProvider } from "react-router-dom";
-import Layout from "./pages/Layout";
+import LayoutMain from "./layouts/LayoutMain";
+import LayoutGallery from "./layouts/LayoutGallery";
 import { Navigate } from 'react-router-dom';
 import Autorization from "./pages/users/Autorization";
 import Signup from "./pages/users/Signup";
@@ -11,6 +12,8 @@ import ProfileGallery from "./pages/profile/ProfileGallery";
 import ProfileExhibition from "./pages/profile/ProfileExhibition";
 import NoPage from "./pages/NoPage";
 import Exhibition from "./pages/Exhibition";
+import Gallery from "./pages/Gallery";
+import Galleries from "./pages/Galleries";
 import "./App.scss";
 
 import {
@@ -20,11 +23,11 @@ import {
 
 const routes = [
   {
-    path: '/',
+    path: 'dashboard',
     element: <Dashboard />,
   },
   {
-    path: '/profile',
+    path: 'profile',
     element: <ProfileIndex />,
   },
   {
@@ -54,12 +57,42 @@ const App: React.FC = () => {
     return [
       {
         path: '/',
-        element: <ProtectedRoute element={<Layout />} />,
+        element: <LayoutMain />,
+        children: [
+          {
+            path: '',
+            element: <Galleries />,
+          },
+        ],
+      },
+      {
+        path: ':name/:id',
+        element: <LayoutGallery />,
+        children: [
+          {
+            path: '',
+            element: <Exhibition />,
+          },
+        ],
+      },
+      {
+        path: ':name',
+        element: <LayoutMain />,
+        children: [
+          {
+            path: '',
+            element: <Gallery />,
+          },
+        ],
+      },
+      {
+        path: '/',
+        element: <ProtectedRoute element={<LayoutMain />} />,
         children: routes,
       },
       {
         path: 'logout',
-        element: <Logout />,
+        element: <Logout />
       },
       {
         path: 'login',
@@ -69,10 +102,7 @@ const App: React.FC = () => {
         path: 'signup',
         element: <Signup />,
       },
-      {
-        path: 'exhibitions/:id',
-        element: <Exhibition />,
-      },
+
       {
         path: '*',
         element: <NoPage />,

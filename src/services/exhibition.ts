@@ -18,10 +18,14 @@ export const deleteExhibition = async (id: string) => {
   return { exhibition: returnOneExhibition(exhibitions as Exhibition[]), error: error };
 }
 
-export const getExhibitions = async (galleryId: string) => {
-  const { data: exhibitions, error } = await api!.from('exhibitions').select().eq('gallery_id', galleryId).eq('status', 'active');
-
-  return { exhibitions: camelcaseKeys(exhibitions ?? [] as Exhibition[]), error: error }
+export const getExhibitions = async (galleryId?: string) => {
+  if (galleryId) {
+    const { data: exhibitions, error } = await api!.from('exhibitions').select().eq('gallery_id', galleryId).eq('status', 'active');
+    return { exhibitions: camelcaseKeys(exhibitions ?? [] as Exhibition[]), error: error }
+  } else {
+    const { data: exhibitions, error } = await api!.from('exhibitions').select().eq('status', 'active');
+    return { exhibitions: camelcaseKeys(exhibitions ?? [] as Exhibition[]), error: error }
+  }
 }
 
 export const getExhibition = async (id: string) => {

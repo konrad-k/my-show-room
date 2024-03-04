@@ -22,7 +22,7 @@ const ProfileExhibition: React.FC = () => {
   const { register: registrExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
-    getGallery(id, sessionUser.id).then(({ gallery }) => {
+    getGallery({ id: id, userId: sessionUser.id }).then(({ gallery }) => {
       if (gallery && gallery.id) {
         setGallery(gallery);
         getExhibitions(gallery.id.toString()).then(({ exhibitions }) => {

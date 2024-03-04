@@ -12,15 +12,15 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     getGalleries(sessionUser?.user.id).then(({ galleries }) => setGalleries(galleries));
-  }, [sessionUser, galleries]);
+  }, []);
 
   if (!profile.firstName || !profile.lastName) {
-    return <Navigate to="/profile/update" />;
+    return <Navigate to="/profile" />;
   }
 
   return <>
-    <h1>Hello {profile.fullName() || 'art lover'}</h1>
-    <h2>My galleries</h2>
+    <h1>Welcome on dashboard {profile.fullName() || 'art lover'}</h1>
+    <h2>Your galleries</h2>
     <div className="grid space-2 gutter-2">
       {galleries.map(gallery => <GalleryTile gallery={gallery} />)}
     </div>

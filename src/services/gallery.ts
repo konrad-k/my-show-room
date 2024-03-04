@@ -24,10 +24,14 @@ export const getGalleries = async (userId: string) => {
   return { galleries: camelcaseKeys(galleries ?? [] as Gallery[]), error: error }
 }
 
-export const getGallery = async (id: string, userId?: string) => {
-  const { data: galleries, error } = await api!.from('galleries').select().eq('id', id).eq('status', 'active')[userId ? 'eq' : null]('user_id', userId);
-
-  return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
+export const getGallery = async (query: { id?: string, userId?: string, galleryName?: string }) => {
+  if (query.userId) {
+    const { data: galleries, error } = await api!.from('galleries').select().eq(query.galleryName ? 'name' : 'id', query.galleryName ? query.galleryName : query.id).eq('user_id', query.userId).eq('status', 'active');
+    return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
+  } else {
+    const { data: galleries, error } = await api!.from('galleries').select().eq(query.galleryName ? 'name' : 'id', query.galleryName ? query.galleryName : query.id).eq('status', 'active');
+    return { gallery: returnOneGallery(galleries as Gallery[]), error: error };
+  }
 }
 
 function returnOneGallery(galleries: Gallery[]) {
