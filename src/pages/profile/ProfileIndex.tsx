@@ -24,9 +24,9 @@ const ProfileIndex: React.FC = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [galleryEditing, setGalleryEditing] = useState<Gallery | null>(null);
 
-  const { register: registrProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();
-  const { register: registrOrganization, handleSubmit: handleSubmitOrganization, formState: { errors: organizationErrors, isValid: isValidOrganization }, reset: organizationReset } = useForm();
-  const { register: registrGallery, handleSubmit: handleSubmitGallery, formState: { errors: galleryErrors, isValid: isValidGallery }, reset: galleryReset } = useForm({ defaultValues: {} });
+  const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();
+  const { register: registerOrganization, handleSubmit: handleSubmitOrganization, formState: { errors: organizationErrors, isValid: isValidOrganization }, reset: organizationReset } = useForm();
+  const { register: registerGallery, handleSubmit: handleSubmitGallery, formState: { errors: galleryErrors, isValid: isValidGallery }, reset: galleryReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     getProfile(sessionUser?.user.id).then((profile) => {
@@ -132,7 +132,7 @@ const ProfileIndex: React.FC = () => {
     <h1>Hello there!</h1>
     <h2>Until we start, we need some profile info from you:</h2>
   </>}
-    <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} registr={registrProfile} errors={profileErrors} />
+    <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} register={registerProfile} errors={profileErrors} />
     <hr className="margin-top-4" />
     {sessionUser && sessionUser?.organization ? (
       <h2>Organization</h2>
@@ -140,7 +140,7 @@ const ProfileIndex: React.FC = () => {
       <h1>Ok, now we need your organization</h1>
     )
     }
-    <OrganizationEditForm onReset={organizationReset} organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} registr={registrOrganization} errors={organizationErrors} />
+    <OrganizationEditForm onReset={organizationReset} organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} register={registerOrganization} errors={organizationErrors} />
     <hr className="margin-top-4" />
     <h2>Galleries</h2>
     {
@@ -149,7 +149,7 @@ const ProfileIndex: React.FC = () => {
           <div key={gallery.id} className="section with-padding gallery gallery-form">
             <div className="section-header">edit: {galleryEditing.name}</div>
             <div className="section-content">
-              <GalleryEditForm key={galleryKey} gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} registr={registrGallery} errors={galleryErrors} />
+              <GalleryEditForm key={galleryKey} gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} register={registerGallery} errors={galleryErrors} />
             </div>
           </div>
         ) : (
@@ -166,7 +166,7 @@ const ProfileIndex: React.FC = () => {
         <div key="new" className="section with-padding gallery gallery-form">
           <div className="section-header">New Gallery</div>
           <div className="section-content">
-            <GalleryEditForm gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} registr={registrGallery} errors={galleryErrors} />
+            <GalleryEditForm gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} register={registerGallery} errors={galleryErrors} />
           </div>
         </div>
       ) : null

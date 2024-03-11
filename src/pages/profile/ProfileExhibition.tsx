@@ -19,7 +19,7 @@ const ProfileArt: React.FC = () => {
   const [arts, setArts] = useState<Art[]>([]);
   const [artEditing, setArtEditing] = useState<Art | null>(null);
 
-  const { register: registrArt, handleSubmit: handleSubmitArt, formState: { errors: artErrors, isValid: isValidArt }, reset: artReset } = useForm({ defaultValues: {} });
+  const { control, watch, setValue, register: registerArt, unregister, handleSubmit: handleSubmitArt, formState: { errors: artErrors, isValid: isValidArt }, reset: artReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     getExhibition(id).then(({ exhibition }) => {
@@ -37,6 +37,8 @@ const ProfileArt: React.FC = () => {
 
   const onArtSubmit = (data: FieldValues) => {
     if (isValidArt) {
+      delete data.image;
+      
       uploadArt(data, id).then(({ art: updatedArt, error }) => {
         if (error?.message) {
           console.log(error.message);
@@ -95,11 +97,11 @@ const ProfileArt: React.FC = () => {
           <div key={art.id} className="section with-padding art art-form">
             <div className="section-header">edit: {artEditing.name}</div>
             <div className="section-content">
-              <ArtEditForm key={artKey} art={artEditing} onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} registr={registrArt} errors={artErrors} />
+              <ArtEditForm key={artKey} art={artEditing} unregister={ unregister } onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} register={registerArt} errors={artErrors} setValue={setValue} control={control} watch={watch} />
             </div>
           </div>
         ) : (
-          <div className="section with-padding art-info">
+            <div key={art.id} className="section with-padding art-info">
             <div className="section-content">
               <ArtEditInfo art={art} handleDeleteClick={handleDeleteClick} handleEditClick={handleEditClick} />
             </div>
@@ -112,7 +114,7 @@ const ProfileArt: React.FC = () => {
         <div key="new" className="section with-padding art art-form">
           <div className="section-header">New Art</div>
           <div className="section-content">
-            <ArtEditForm art={artEditing} onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} registr={registrArt} errors={artErrors} />
+            <ArtEditForm art={artEditing} onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} register={registerArt} errors={artErrors} setValue={setValue} control={control} />
           </div>
         </div>
       ) : null

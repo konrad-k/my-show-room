@@ -56,40 +56,40 @@ export const ExhibitionEditInfo: React.FC<ExhibitionEditInfoProps> = ({ exhibiti
   </div>
 }
 
-export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, registr, errors, onSubmit, onReset }) => {
+export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, register, errors, onSubmit, onReset }) => {
   const id = exhibition?.id;
   return <form key={exhibition.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
-    {id && <input type="hidden" {...registr("id")} />}
+    {id && <input type="hidden" {...register("id")} />}
     <div className="row">
       <label className="cell-6 label">Full Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Full Name" {...registr("fullName", { required: true })} />
+        <input type="text" placeholder="Full Name" {...register("fullName", { required: true })} />
         {errors.fullName && <span>{errors.fullName.message.toString()}</span>}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Name" {...registr("name", { required: true })} />
+        <input type="text" placeholder="Name" {...register("name", { required: true })} />
         {errors.name && <span>{errors.name.message.toString()}</span>}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Description:</label>
       <div className="cell-10">
-        <input type="text" placeholder="description" {...registr("description")} />
+        <input type="text" placeholder="description" {...register("description")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Address:</label>
       <div className="cell-10">
-        <input type="text" placeholder="address" {...registr("address")} />
+        <input type="text" placeholder="address" {...register("address")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Poster URL:</label>
       <div className="cell-10">
-        <input type="text" placeholder="posterUrl" {...registr("posterUrl")} />
+        <input type="text" placeholder="posterUrl" {...register("posterUrl")} />
       </div>
     </div>
     <div className="row items items-end">

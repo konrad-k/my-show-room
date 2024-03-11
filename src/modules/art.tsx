@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Art } from "../models/art.model";
 import { EditFormProps } from "./EditForm";
-import { Link } from "react-router-dom"
-
+import { Link } from "react-router-dom";
+import { Controller } from "react-hook-form";
+import api from "../utils/Api"
+import { v4 as uuidv4 } from 'uuid';
 
 interface ArtProps {
   art: Art;
@@ -38,86 +40,122 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
       <div className="cell-16">{art?.name}</div>
     </div>
     <div className="row">
-      <div className="cell-16">{art?.description}</div>
+      <div className="cell-16">
+        <img src={art?.imageUrl} alt={art?.name} />
+        <p>{art?.description}</p>
+      </div>
     </div>
   </div>
 }
 
-export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, registr, errors, onSubmit, onReset }) => {
+export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, register, errors, onSubmit, onReset, control, watch, setValue }) => {
+ 
+  const image = watch('image');
+  const imagePreview = image ? URL.createObjectURL(image) : null;
+
+  const handleOnChange = (image) => {
+    if (image) {
+      const fileName = uuidv4();
+      const ext = image.name.substr(image.name.lastIndexOf('.') + 1);
+      api.storage.from('arts').upload(`${id}/${fileName}.${ext}`, image).then(({ data: image }) => {
+        const { data: publicImage } = api
+          .storage
+          .from('arts')
+          .getPublicUrl(image.path);
+        setValue('imageUrl', publicImage.publicUrl);
+        setValue('imagePath', image.path);
+        setValue('hdImageUrl', publicImage.publicUrl);
+        setValue('posterUrl', publicImage.publicUrl);
+      });
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
   const id = art?.id;
   return <form key={art.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
-    {id && <input type="hidden" {...registr("id")} />}
+    {id && <input type="hidden" {...register("id")} />}
     <div className="row">
       <label className="cell-6 label">Legal Status:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Legal Status" {...registr("legalStatus")} />
+        <input type="text" placeholder="Legal Status" {...register("legalStatus")} />
       </div>
     </div>
     <div className="row">
-      <label className="cell-6 label">Image URL:</label>
+      <label className="cell-6 label">Image:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Image URL" {...registr("imageUrl")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">HD Image URL:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="HD Image URL" {...registr("hdImageUrl")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Poster URL:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Poster URL" {...registr("posterUrl")} />
+        <Controller
+          name="image"
+          control={control}
+          render={({ field: { ref, name, onBlur, onChange } }) => (
+            <>
+              <input type="hidden" {...register("imageUrl")} />
+              <input type="hidden" {...register("imagePath")} />
+              <input
+                type="file"
+                ref={ref}
+                name={name}
+                onBlur={onBlur}
+                onChange={(e) => { onChange(e.target.files?.[0]); handleOnChange(e.target.files?.[0]) }}
+              />
+            </>
+        )}
+        />
+        {imagePreview && <img src={imagePreview} alt="preview" />}
+        {!imagePreview && art.imageUrl && <img src={art.imageUrl} alt="preview" />}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Name" {...registr("name", { required: true })} />
+        <input type="text" placeholder="Name" {...register("name", { required: true })} />
         {errors.name && <span>This field is required</span>}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Description:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Description" {...registr("description")} />
+        <input type="text" placeholder="Description" {...register("description")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Title:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Title" {...registr("title")} />
+        <input type="text" placeholder="Title" {...register("title")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Style:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Style" {...registr("style")} />
+        <input type="text" placeholder="Style" {...register("style")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Technique:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Technique" {...registr("technique")} />
+        <input type="text" placeholder="Technique" {...register("technique")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Width:</label>
       <div className="cell-10">
-        <input type="number" placeholder="Width" {...registr("width")} />
+        <input type="number" placeholder="Width" {...register("width")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Height:</label>
       <div className="cell-10">
-        <input type="number" placeholder="Height" {...registr("height")} />
+        <input type="number" placeholder="Height" {...register("height")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Location:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Location" {...registr("location")} />
+        <input type="text" placeholder="Location" {...register("location")} />
       </div>
     </div>
     <div className="row items items-end">

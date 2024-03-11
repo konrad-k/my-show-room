@@ -53,46 +53,46 @@ export const GalleryEditInfo: React.FC<GalleryEditInfoProps> = ({ gallery, handl
   </div>
 }
 
-export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, registr, errors, onSubmit, onReset }) => {
+export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, register, errors, onSubmit, onReset }) => {
   const id = gallery?.id;
   return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
-    {id && <input type="hidden" {...registr("id")} />}
+    {id && <input type="hidden" {...register("id")} />}
     <div className="row">
       <label className="cell-6 label">Full Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Full Name" {...registr("fullName", { required: true })} />
+        <input type="text" placeholder="Full Name" {...register("fullName", { required: true })} />
         {errors.fullName && <span>This field is required</span>}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Name" {...registr("name", { required: true })} />
+        <input type="text" placeholder="Name" {...register("name", { required: true })} />
         {errors.name && <span>This field is required</span>}
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Description:</label>
       <div className="cell-10">
-        <input type="text" placeholder="description" {...registr("description")} />
+        <input type="text" placeholder="description" {...register("description")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Address:</label>
       <div className="cell-10">
-        <input type="text" placeholder="address" {...registr("address")} />
+        <input type="text" placeholder="address" {...register("address")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Logo URL:</label>
       <div className="cell-10">
-        <input type="text" placeholder="logoUrl" {...registr("logoUrl")} />
+        <input type="text" placeholder="logoUrl" {...register("logoUrl")} />
       </div>
     </div>
     <div className="row">
       <label className="cell-6 label">Style:</label>
       <div className="cell-10">
-        <textarea placeholder="style" {...registr("style")} />
+        <textarea placeholder="style" {...register("style")} />
       </div>
     </div>
     <div className="row items items-end">

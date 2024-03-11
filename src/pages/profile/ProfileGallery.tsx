@@ -19,7 +19,7 @@ const ProfileExhibition: React.FC = () => {
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [exhibitionEditing, setExhibitionEditing] = useState<Exhibition | null>(null);
 
-  const { register: registrExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
+  const { register: registerExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     getGallery({ id: id, userId: sessionUser.id }).then(({ gallery }) => {
@@ -95,7 +95,7 @@ const ProfileExhibition: React.FC = () => {
           <div key={exhibition.id} className="section with-padding exhibition exhibition-form">
             <div className="section-header">edit: {exhibitionEditing.name}</div>
             <div className="section-content">
-              <ExhibitionEditForm key={exhibitionKey} exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} registr={registrExhibition} errors={exhibitionErrors} />
+              <ExhibitionEditForm key={exhibitionKey} exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} register={registerExhibition} errors={exhibitionErrors} />
             </div>
           </div>
         ) : (
@@ -112,7 +112,7 @@ const ProfileExhibition: React.FC = () => {
         <div key="new" className="section with-padding exhibition exhibition-form">
           <div className="section-header">New Exhibition</div>
           <div className="section-content">
-            <ExhibitionEditForm exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} registr={registrExhibition} errors={exhibitionErrors} />
+            <ExhibitionEditForm exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} register={registerExhibition} errors={exhibitionErrors} />
           </div>
         </div>
       ) : null

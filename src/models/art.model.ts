@@ -5,8 +5,11 @@ export type Art = {
   createdAt?: string | null;
   legalStatus?: string | null;
   imageUrl?: string | null;
+  imagePath?: string | null;
   hdImageUrl?: string | null;
+  hdImagePath?: string | null;
   posterUrl?: string | null;
+  posterImagePath?: string | null;
   name: string;
   description?: string | null;
   title?: string | null;
