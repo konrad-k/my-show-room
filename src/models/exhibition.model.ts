@@ -1,4 +1,4 @@
-type Exhibition = {
+export type Exhibition = {
   id?: string;
   galleryId?: string;
   createdAt?: string;

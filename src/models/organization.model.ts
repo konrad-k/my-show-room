@@ -1,4 +1,4 @@
-type Organization = {
+export type Organization = {
   id?: string;
   name: string;
   fullName: string;

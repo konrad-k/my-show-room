@@ -1,4 +1,4 @@
-type Gallery = {
+export type Gallery = {
   id?: string;
   userId?: string;
   createdAt?: string;

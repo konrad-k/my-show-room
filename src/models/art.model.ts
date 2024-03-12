@@ -1,4 +1,4 @@
-type Art = {
+export type Art = {
   id?: string;
   authorId?: number | null;
   exhibitionId?: number | null;
