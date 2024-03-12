@@ -1,7 +1,9 @@
-export type Profile = {
+type Profile = {
   id?: string;
   firstName: string;
   lastName: string;
   avatarUrl: string;
   userId?: string;
 }
+
+export default Profile;

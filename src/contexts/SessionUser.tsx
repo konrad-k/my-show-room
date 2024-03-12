@@ -1,8 +1,8 @@
 import React from 'react';
 import useSessionUser from '../hooks/useSessionUser';
-import { Profile } from '../models/profile.model';
-import { Organization } from '../models/organization.model';
-import { User } from '../models/user.model';
+import Profile from '../models/profile.model';
+import Organization from '../models/organization.model';
+import User from '../models/user.model';
 import { Session } from '@supabase/supabase-js';
 
 export type SessionUser = {

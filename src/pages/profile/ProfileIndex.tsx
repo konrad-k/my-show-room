@@ -2,9 +2,9 @@ import React from 'react';
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm, FieldValues } from "react-hook-form";
 import { useEffect, useState } from 'react';
-import { Gallery } from "../../models/gallery.model";
-import { Organization } from "../../models/organization.model";
-import { Profile } from "../../models/profile.model";
+import Gallery from "../../models/gallery.model";
+import Organization from "../../models/organization.model";
+import Profile from "../../models/profile.model";
 
 import { GalleryEditForm, GalleryEditInfo } from "../../modules/gallery";
 import { uploadGallery, deleteGallery, getGalleries } from "../../services/gallery";
@@ -153,7 +153,7 @@ const ProfileIndex: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="section with-padding gallery-info">
+            <div key={gallery.id} className="section with-padding gallery-info">
             <div className="section-content">
               <GalleryEditInfo gallery={gallery} handleDeleteClick={handleDeleteGalleryClick} handleEditClick={handleEditGalleryClick} />
             </div>

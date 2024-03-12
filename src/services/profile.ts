@@ -1,7 +1,7 @@
 import api from "../utils/Api"
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
-import { Profile } from "../models/profile.model";
+import Profile from "../models/profile.model";
 import { FieldValues } from "react-hook-form";
 
 export const getProfile = async (userId: string) => {

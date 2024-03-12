@@ -1,5 +1,5 @@
 import api from "../utils/Api"
-import { Organization } from "../models/organization.model";
+import Organization from "../models/organization.model";
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
 import { FieldValues } from "react-hook-form";

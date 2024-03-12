@@ -1,8 +1,9 @@
 import React from 'react';
-import { Exhibition } from "../models/exhibition.model";
-import { Gallery } from "../models/gallery.model";
-import { EditFormProps } from "./EditForm";
-import { Link } from "react-router-dom"
+import Exhibition from '../models/exhibition.model';
+import Gallery from '../models/gallery.model';
+import { EditFormProps } from './EditForm';
+import { Link } from 'react-router-dom'
+import useFileUploader from '../hooks/useFileUploader'
 
 
 interface ExhibitionProps {
@@ -56,7 +57,9 @@ export const ExhibitionEditInfo: React.FC<ExhibitionEditInfoProps> = ({ exhibiti
   </div>
 }
 
-export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, register, errors, onSubmit, onReset }) => {
+export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, register, errors, onSubmit, onReset, setValue, watch, control }) => {
+  const { Controller: PosterController } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, watch, setValue, control, register }, () => { });
+
   const id = exhibition?.id;
   return <form key={exhibition.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
@@ -89,7 +92,7 @@ export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibiti
     <div className="row">
       <label className="cell-6 label">Poster URL:</label>
       <div className="cell-10">
-        <input type="text" placeholder="posterUrl" {...register("posterUrl")} />
+        <PosterController/>
       </div>
     </div>
     <div className="row items items-end">

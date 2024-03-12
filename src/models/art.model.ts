@@ -1,4 +1,4 @@
-export type Art = {
+type Art = {
   id?: string;
   authorId?: number | null;
   exhibitionId?: number | null;
@@ -19,3 +19,5 @@ export type Art = {
   height?: number | null;
   location?: string | null;
 }
+
+export default Art;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import User from '../models/user.model';
 
 export default function useSessionUser() {
   const getUser = () => {
@@ -8,7 +9,7 @@ export default function useSessionUser() {
 
   const [sessionUser, setSessionUser] = useState(getUser() || null);
 
-  const saveUser = (user: any) => {
+  const saveUser = (user: User) => {
     localStorage.setItem('user', JSON.stringify(user));
     setSessionUser(user)
   };

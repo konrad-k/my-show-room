@@ -3,8 +3,8 @@ import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm, FieldValues } from "react-hook-form";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Exhibition } from "../../models/exhibition.model";
-import { Gallery } from "../../models/gallery.model";
+import Exhibition from "../../models/exhibition.model";
+import Gallery from "../../models/gallery.model";
 
 import { ExhibitionEditForm, ExhibitionEditInfo } from "../../modules/exhibition";
 import { getGallery } from "../../services/gallery";
@@ -19,7 +19,7 @@ const ProfileExhibition: React.FC = () => {
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [exhibitionEditing, setExhibitionEditing] = useState<Exhibition | null>(null);
 
-  const { register: registerExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
+  const { control, watch, setValue, register: registerExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     getGallery({ id: id, userId: sessionUser.id }).then(({ gallery }) => {
@@ -37,6 +37,7 @@ const ProfileExhibition: React.FC = () => {
 
   const onExhibitionSubmit = (data: FieldValues) => {
     if (isValidExhibition) {
+      delete data.poster;
       uploadExhibition(data, id).then(({ exhibition: updatedExhibition, error }) => {
         if (error?.message) {
           console.log(error.message);
@@ -90,18 +91,31 @@ const ProfileExhibition: React.FC = () => {
   return gallery && <div className="profile">
     <h2>Exhibitions of `{gallery.fullName}` gallery</h2>
     {
-      exhibitions.map((exhibition, exhibitionKey) => (
+      exhibitions.map((exhibition) => (
         exhibitionEditing && exhibitionEditing.id === exhibition.id ? (
           <div key={exhibition.id} className="section with-padding exhibition exhibition-form">
             <div className="section-header">edit: {exhibitionEditing.name}</div>
             <div className="section-content">
-              <ExhibitionEditForm key={exhibitionKey} exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} register={registerExhibition} errors={exhibitionErrors} />
+              <ExhibitionEditForm
+                exhibition={exhibitionEditing}
+                onSubmit={handleSubmitExhibition(onExhibitionSubmit)}
+                onReset={handleExhibitionReset}
+                register={registerExhibition}
+                errors={exhibitionErrors}
+                control={control}
+                watch={watch}
+                setValue={setValue}
+              />
             </div>
           </div>
         ) : (
-          <div className="section with-padding exhibition-info">
+          <div key={exhibition.id} className="section with-padding exhibition-info">
             <div className="section-content">
-              <ExhibitionEditInfo exhibition={exhibition} handleDeleteClick={handleDeleteClick} handleEditClick={handleEditClick} />
+                <ExhibitionEditInfo
+                  exhibition={exhibition}
+                  handleDeleteClick={handleDeleteClick}
+                  handleEditClick={handleEditClick}
+                />
             </div>
           </div>
         )
@@ -112,7 +126,16 @@ const ProfileExhibition: React.FC = () => {
         <div key="new" className="section with-padding exhibition exhibition-form">
           <div className="section-header">New Exhibition</div>
           <div className="section-content">
-            <ExhibitionEditForm exhibition={exhibitionEditing} onSubmit={handleSubmitExhibition(onExhibitionSubmit)} onReset={handleExhibitionReset} register={registerExhibition} errors={exhibitionErrors} />
+            <ExhibitionEditForm
+              exhibition={exhibitionEditing}
+              onSubmit={handleSubmitExhibition(onExhibitionSubmit)}
+              onReset={handleExhibitionReset}
+              register={registerExhibition}
+              errors={exhibitionErrors}
+              control={control}
+              watch={watch}
+              setValue={setValue}
+            />
           </div>
         </div>
       ) : null

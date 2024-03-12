@@ -1,4 +1,4 @@
-export type Gallery = {
+type Gallery = {
   id?: string;
   userId?: string;
   createdAt?: string;
@@ -9,3 +9,5 @@ export type Gallery = {
   logoUrl: string;
   style: JSON;
 }
+
+export default Gallery;

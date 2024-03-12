@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import { Art } from "../models/art.model";
-import { EditFormProps } from "./EditForm";
-import { Link } from "react-router-dom";
-import { Controller } from "react-hook-form";
-import api from "../utils/Api"
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
+import Art from '../models/art.model';
+import { EditFormProps } from './EditForm';
+import { Link } from 'react-router-dom';
+import useFileUploader from '../hooks/useFileUploader'
 
 interface ArtProps {
   art: Art;
@@ -49,32 +47,12 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
 }
 
 export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, register, errors, onSubmit, onReset, control, watch, setValue }) => {
- 
-  const image = watch('image');
-  const imagePreview = image ? URL.createObjectURL(image) : null;
-
-  const handleOnChange = (image) => {
-    if (image) {
-      const fileName = uuidv4();
-      const ext = image.name.substr(image.name.lastIndexOf('.') + 1);
-      api.storage.from('arts').upload(`${id}/${fileName}.${ext}`, image).then(({ data: image }) => {
-        const { data: publicImage } = api
-          .storage
-          .from('arts')
-          .getPublicUrl(image.path);
-        setValue('imageUrl', publicImage.publicUrl);
-        setValue('imagePath', image.path);
-        setValue('hdImageUrl', publicImage.publicUrl);
-        setValue('posterUrl', publicImage.publicUrl);
-      });
+  const { Controller: ImageController } = useFileUploader({ name: 'image', from: 'arts', actor: art, watch, setValue, control, register }, (url) => {
+    if (url) {
+      setValue('hdImageUrl', url);
+      setValue('posterUrl', url);
     }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
-    };
-  }, [imagePreview]);
+  });
 
   const id = art?.id;
   return <form key={art.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
@@ -88,25 +66,7 @@ export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, register, errors,
     <div className="row">
       <label className="cell-6 label">Image:</label>
       <div className="cell-10">
-        <Controller
-          name="image"
-          control={control}
-          render={({ field: { ref, name, onBlur, onChange } }) => (
-            <>
-              <input type="hidden" {...register("imageUrl")} />
-              <input type="hidden" {...register("imagePath")} />
-              <input
-                type="file"
-                ref={ref}
-                name={name}
-                onBlur={onBlur}
-                onChange={(e) => { onChange(e.target.files?.[0]); handleOnChange(e.target.files?.[0]) }}
-              />
-            </>
-        )}
-        />
-        {imagePreview && <img src={imagePreview} alt="preview" />}
-        {!imagePreview && art.imageUrl && <img src={art.imageUrl} alt="preview" />}
+        <ImageController/>
       </div>
     </div>
     <div className="row">

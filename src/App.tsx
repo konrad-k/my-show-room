@@ -1,5 +1,5 @@
 import React from 'react';
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import LayoutMain from "./layouts/LayoutMain";
 import LayoutGallery from "./layouts/LayoutGallery";
 import { Navigate } from 'react-router-dom';

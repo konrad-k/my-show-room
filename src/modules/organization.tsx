@@ -1,5 +1,5 @@
 import React from 'react';
-import { Organization } from "../models/organization.model";
+import Organization from "../models/organization.model";
 import { EditFormProps } from "./EditForm";
 
 interface organizationEditFormProps extends EditFormProps {

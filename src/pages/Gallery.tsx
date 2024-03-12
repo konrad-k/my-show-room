@@ -26,7 +26,7 @@ const Gallery: React.FC = () => {
   return gallery && exhibitions && <>
     <h1>{gallery.fullName}</h1>
     <div className="grid space-2 gutter-2">
-      {exhibitions.map(exhibition => <ExhibitionTile exhibition={exhibition} gallery={gallery} />)}
+      {exhibitions.map(exhibition => <ExhibitionTile key={exhibition.id} exhibition={exhibition} gallery={gallery} />)}
     </div>
   </>
 }

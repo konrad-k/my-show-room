@@ -1,7 +1,7 @@
 import React from 'react';
-import { Gallery } from "../models/gallery.model";
+import Gallery from "../models/gallery.model";
 import { EditFormProps } from "./EditForm";
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 
 interface GalleryProps {

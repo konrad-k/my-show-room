@@ -1,4 +1,4 @@
-export type Exhibition = {
+type Exhibition = {
   id?: string;
   galleryId?: string;
   createdAt?: string;
@@ -10,3 +10,5 @@ export type Exhibition = {
   endAt: Date;
   posterUrl: string;
 }
+
+export default Exhibition;

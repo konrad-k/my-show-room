@@ -1,4 +1,4 @@
-export type Organization = {
+type Organization = {
   id?: string;
   name: string;
   fullName: string;
@@ -6,3 +6,5 @@ export type Organization = {
   website: string;
   userId?: string;
 }
+
+export default Organization;

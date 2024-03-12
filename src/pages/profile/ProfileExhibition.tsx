@@ -3,8 +3,8 @@ import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm, FieldValues } from "react-hook-form";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Art } from "../../models/art.model";
-import { Exhibition } from "../../models/exhibition.model";
+import Art from "../../models/art.model";
+import Exhibition from "../../models/exhibition.model";
 
 import { ArtEditForm, ArtEditInfo } from "../../modules/art";
 import { getExhibition } from "../../services/exhibition";
@@ -97,7 +97,18 @@ const ProfileArt: React.FC = () => {
           <div key={art.id} className="section with-padding art art-form">
             <div className="section-header">edit: {artEditing.name}</div>
             <div className="section-content">
-              <ArtEditForm key={artKey} art={artEditing} unregister={ unregister } onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} register={registerArt} errors={artErrors} setValue={setValue} control={control} watch={watch} />
+              <ArtEditForm
+                key={artKey}
+                art={artEditing}
+                unregister={unregister}
+                onSubmit={handleSubmitArt(onArtSubmit)}
+                onReset={handleArtReset}
+                register={registerArt}
+                errors={artErrors}
+                setValue={setValue}
+                control={control}
+                watch={watch}
+              />
             </div>
           </div>
         ) : (
@@ -114,7 +125,16 @@ const ProfileArt: React.FC = () => {
         <div key="new" className="section with-padding art art-form">
           <div className="section-header">New Art</div>
           <div className="section-content">
-            <ArtEditForm art={artEditing} onSubmit={handleSubmitArt(onArtSubmit)} onReset={handleArtReset} register={registerArt} errors={artErrors} setValue={setValue} control={control} />
+            <ArtEditForm
+              art={artEditing}
+              onSubmit={handleSubmitArt(onArtSubmit)}
+              onReset={handleArtReset}
+              register={registerArt}
+              errors={artErrors}
+              setValue={setValue}
+              control={control}
+              watch={watch}
+            />
           </div>
         </div>
       ) : null

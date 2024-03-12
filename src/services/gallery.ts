@@ -1,7 +1,7 @@
 import api from "../utils/Api"
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
-import { Gallery } from "../models/gallery.model";
+import Gallery from "../models/gallery.model";
 import { FieldValues } from "react-hook-form";
 
 export const uploadGallery = async (data: FieldValues, userId: string) => {

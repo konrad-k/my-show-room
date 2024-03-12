@@ -22,7 +22,7 @@ const Dashboard: React.FC = () => {
     <h1>Welcome on dashboard {profile.fullName() || 'art lover'}</h1>
     <h2>Your galleries</h2>
     <div className="grid space-2 gutter-2">
-      {galleries.map(gallery => <GalleryTile gallery={gallery} />)}
+      {galleries.map(gallery => <GalleryTile key={gallery.id} gallery={gallery} />)}
     </div>
   </>
 }
