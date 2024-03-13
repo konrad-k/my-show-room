@@ -203,6 +203,7 @@ const ProfileIndex: React.FC = () => {
         </div>
       ) : null
     }
+    <p>gallery limit: { galleryLimit }</p>
     {
       !galleryEditing && galleries.length < parseInt(galleryLimit) && <button onClick={handleAddGallery} className="button">Add new gallery</button>
     }
