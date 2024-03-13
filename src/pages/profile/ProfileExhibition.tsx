@@ -19,7 +19,8 @@ const ProfileArt: React.FC = () => {
   const [arts, setArts] = useState<Art[]>([]);
   const [artEditing, setArtEditing] = useState<Art | null>(null);
 
-  const { control, watch, setValue, register: registerArt, unregister, handleSubmit: handleSubmitArt, formState: { errors: artErrors, isValid: isValidArt }, reset: artReset } = useForm({ defaultValues: {} });
+  const form = useForm({ defaultValues: {} });
+  const { handleSubmit, formState: { isValid }, reset } = form;
 
   useEffect(() => {
     getExhibition(id).then(({ exhibition }) => {
@@ -35,15 +36,15 @@ const ProfileArt: React.FC = () => {
   }, []);
 
 
-  const onArtSubmit = (data: FieldValues) => {
-    if (isValidArt) {
+  const onSubmit = (data: FieldValues) => {
+    if (isValid) {
       delete data.image;
       
       uploadArt(data, id).then(({ art: updatedArt, error }) => {
         if (error?.message) {
           console.log(error.message);
         } else {
-          artReset();
+          reset();
           setArtEditing(null);
           if (arts?.length) {
             let newArts = arts;
@@ -62,17 +63,17 @@ const ProfileArt: React.FC = () => {
   }
 
   const handleAddArt = () => {
-    artReset({});
+    reset({});
     setArtEditing({} as Art);
   }
 
   const handleEditClick = (art: Art) => {
-    artReset(art);
+    reset(art);
     setArtEditing(art);
   }
 
-  const handleArtReset = () => {
-    artReset({});
+  const handleReset = () => {
+    reset({});
     setArtEditing(null);
   }
 
@@ -92,22 +93,16 @@ const ProfileArt: React.FC = () => {
   return exhibition && <div className="profile">
     <h2>Arts of `{exhibition.fullName}` exhibition</h2>
     {
-      arts.map((art, artKey) => (
+      arts.map((art) => (
         artEditing && artEditing.id === art.id ? (
           <div key={art.id} className="section with-padding art art-form">
             <div className="section-header">edit: {artEditing.name}</div>
             <div className="section-content">
               <ArtEditForm
-                key={artKey}
                 art={artEditing}
-                unregister={unregister}
-                onSubmit={handleSubmitArt(onArtSubmit)}
-                onReset={handleArtReset}
-                register={registerArt}
-                errors={artErrors}
-                setValue={setValue}
-                control={control}
-                watch={watch}
+                onSubmit={handleSubmit(onSubmit)}
+                onReset={handleReset}
+                form={form}
               />
             </div>
           </div>
@@ -127,13 +122,9 @@ const ProfileArt: React.FC = () => {
           <div className="section-content">
             <ArtEditForm
               art={artEditing}
-              onSubmit={handleSubmitArt(onArtSubmit)}
-              onReset={handleArtReset}
-              register={registerArt}
-              errors={artErrors}
-              setValue={setValue}
-              control={control}
-              watch={watch}
+              onSubmit={handleSubmit(onSubmit)}
+              onReset={handleReset}
+              form={form}
             />
           </div>
         </div>

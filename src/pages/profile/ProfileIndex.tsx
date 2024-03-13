@@ -24,9 +24,14 @@ const ProfileIndex: React.FC = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [galleryEditing, setGalleryEditing] = useState<Gallery | null>(null);
 
-  const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: profileErrors, isValid: isValidProfile }, reset: profileReset } = useForm();
-  const { register: registerOrganization, handleSubmit: handleSubmitOrganization, formState: { errors: organizationErrors, isValid: isValidOrganization }, reset: organizationReset } = useForm();
-  const { register: registerGallery, handleSubmit: handleSubmitGallery, formState: { errors: galleryErrors, isValid: isValidGallery }, reset: galleryReset } = useForm({ defaultValues: {} });
+  const profileForm = useForm();
+  const { handleSubmit: handleSubmitProfile, formState: { isValid: isValidProfile }, reset: profileReset } = profileForm;
+  
+  const organizationForm = useForm();
+  const { handleSubmit: handleSubmitOrganization, formState: { isValid: isValidOrganization }, reset: organizationReset } = organizationForm;
+  
+  const galleryForm = useForm({ defaultValues: {} });
+  const { handleSubmit: handleSubmitGallery, formState: { isValid: isValidGallery }, reset: galleryReset } = galleryForm;
 
   useEffect(() => {
     getProfile(sessionUser?.user.id).then((profile) => {
@@ -52,6 +57,7 @@ const ProfileIndex: React.FC = () => {
 
   const onProfileSubmit = (data: FieldValues) => {
     if (isValidProfile) {
+      delete data.avatar;
       uploadProfile(data, sessionUser?.user.id).then((profile) => {
         if (profile) {
           setProfile(profile);
@@ -63,6 +69,7 @@ const ProfileIndex: React.FC = () => {
 
   const onOrganizationSubmit = (data: FieldValues) => {
     if (isValidOrganization) {
+      delete data.logo;
       uploadOrganization(data, sessionUser?.user.id).then((organization) => {
         if (organization) {
           setOrganization(organization)
@@ -74,6 +81,7 @@ const ProfileIndex: React.FC = () => {
 
   const onGallerySubmit = (data: FieldValues) => {
     if (isValidGallery) {
+      delete data.logo;
       uploadGallery(data, sessionUser?.user.id).then(({ gallery: updatedGallery, error }) => {
         if (error?.message) {
           console.log(error.message);
@@ -132,7 +140,12 @@ const ProfileIndex: React.FC = () => {
     <h1>Hello there!</h1>
     <h2>Until we start, we need some profile info from you:</h2>
   </>}
-    <ProfileEditForm onReset={profileReset} profile={profile} onSubmit={handleSubmitProfile(onProfileSubmit)} register={registerProfile} errors={profileErrors} />
+    <ProfileEditForm
+      profile={profile}
+      onReset={profileReset}
+      onSubmit={handleSubmitProfile(onProfileSubmit)}
+      form={profileForm}
+    />
     <hr className="margin-top-4" />
     {sessionUser && sessionUser?.organization ? (
       <h2>Organization</h2>
@@ -140,22 +153,36 @@ const ProfileIndex: React.FC = () => {
       <h1>Ok, now we need your organization</h1>
     )
     }
-    <OrganizationEditForm onReset={organizationReset} organization={organization} onSubmit={handleSubmitOrganization(onOrganizationSubmit)} register={registerOrganization} errors={organizationErrors} />
+    <OrganizationEditForm
+      organization={organization}
+      onReset={organizationReset}
+      onSubmit={handleSubmitOrganization(onOrganizationSubmit)}
+      form={organizationForm}
+    />
     <hr className="margin-top-4" />
     <h2>Galleries</h2>
     {
-      galleries.map((gallery, galleryKey) => (
+      galleries.map((gallery) => (
         galleryEditing && galleryEditing.id === gallery.id ? (
           <div key={gallery.id} className="section with-padding gallery gallery-form">
             <div className="section-header">edit: {galleryEditing.name}</div>
             <div className="section-content">
-              <GalleryEditForm key={galleryKey} gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} register={registerGallery} errors={galleryErrors} />
+              <GalleryEditForm
+                gallery={galleryEditing}
+                onSubmit={handleSubmitGallery(onGallerySubmit)}
+                onReset={handleGalleryReset}
+                form={galleryForm}
+              />
             </div>
           </div>
         ) : (
             <div key={gallery.id} className="section with-padding gallery-info">
             <div className="section-content">
-              <GalleryEditInfo gallery={gallery} handleDeleteClick={handleDeleteGalleryClick} handleEditClick={handleEditGalleryClick} />
+                <GalleryEditInfo
+                  gallery={gallery}
+                  handleDeleteClick={handleDeleteGalleryClick}
+                  handleEditClick={handleEditGalleryClick}
+                />
             </div>
           </div>
         )
@@ -166,7 +193,12 @@ const ProfileIndex: React.FC = () => {
         <div key="new" className="section with-padding gallery gallery-form">
           <div className="section-header">New Gallery</div>
           <div className="section-content">
-            <GalleryEditForm gallery={galleryEditing} onSubmit={handleSubmitGallery(onGallerySubmit)} onReset={handleGalleryReset} register={registerGallery} errors={galleryErrors} />
+            <GalleryEditForm
+              gallery={galleryEditing}
+              onSubmit={handleSubmitGallery(onGallerySubmit)}
+              onReset={handleGalleryReset}
+              form={galleryForm}
+            />
           </div>
         </div>
       ) : null

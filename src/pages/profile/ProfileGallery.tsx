@@ -19,7 +19,8 @@ const ProfileExhibition: React.FC = () => {
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
   const [exhibitionEditing, setExhibitionEditing] = useState<Exhibition | null>(null);
 
-  const { control, watch, setValue, register: registerExhibition, handleSubmit: handleSubmitExhibition, formState: { errors: exhibitionErrors, isValid: isValidExhibition }, reset: exhibitionReset } = useForm({ defaultValues: {} });
+  const form = useForm({ defaultValues: {} });
+  const { handleSubmit: handleSubmit, formState: { isValid }, reset: exhibitionReset } = form;
 
   useEffect(() => {
     getGallery({ id: id, userId: sessionUser.id }).then(({ gallery }) => {
@@ -35,8 +36,8 @@ const ProfileExhibition: React.FC = () => {
   }, []);
 
 
-  const onExhibitionSubmit = (data: FieldValues) => {
-    if (isValidExhibition) {
+  const onSubmit = (data: FieldValues) => {
+    if (isValid) {
       delete data.poster;
       uploadExhibition(data, id).then(({ exhibition: updatedExhibition, error }) => {
         if (error?.message) {
@@ -60,7 +61,7 @@ const ProfileExhibition: React.FC = () => {
     }
   }
 
-  const handleAddExhibition = () => {
+  const handleAdd = () => {
     exhibitionReset({});
     setExhibitionEditing({} as Exhibition);
   }
@@ -70,7 +71,7 @@ const ProfileExhibition: React.FC = () => {
     setExhibitionEditing(exhibition);
   }
 
-  const handleExhibitionReset = () => {
+  const handleReset = () => {
     exhibitionReset({});
     setExhibitionEditing(null);
   }
@@ -98,13 +99,9 @@ const ProfileExhibition: React.FC = () => {
             <div className="section-content">
               <ExhibitionEditForm
                 exhibition={exhibitionEditing}
-                onSubmit={handleSubmitExhibition(onExhibitionSubmit)}
-                onReset={handleExhibitionReset}
-                register={registerExhibition}
-                errors={exhibitionErrors}
-                control={control}
-                watch={watch}
-                setValue={setValue}
+                onSubmit={handleSubmit(onSubmit)}
+                onReset={handleReset}
+                form={form}
               />
             </div>
           </div>
@@ -128,20 +125,16 @@ const ProfileExhibition: React.FC = () => {
           <div className="section-content">
             <ExhibitionEditForm
               exhibition={exhibitionEditing}
-              onSubmit={handleSubmitExhibition(onExhibitionSubmit)}
-              onReset={handleExhibitionReset}
-              register={registerExhibition}
-              errors={exhibitionErrors}
-              control={control}
-              watch={watch}
-              setValue={setValue}
+              onSubmit={handleSubmit(onSubmit)}
+              onReset={handleReset}
+              form={form}
             />
           </div>
         </div>
       ) : null
     }
     {
-      !exhibitionEditing && exhibitions.length < parseInt(exhibitionLimit) && <button onClick={handleAddExhibition} className="button">Add new exhibition</button>
+      !exhibitionEditing && exhibitions.length < parseInt(exhibitionLimit) && <button onClick={handleAdd} className="button">Add new exhibition</button>
     }
   </div>
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import Gallery from "../models/gallery.model";
-import { EditFormProps } from "./EditForm";
 import { Link } from 'react-router-dom'
-
+import Gallery from '../models/gallery.model';
+import { EditFormProps } from './EditForm';
+import useFileUploader from '../hooks/useFileUploader'
 
 interface GalleryProps {
   gallery: Gallery;
@@ -53,7 +53,9 @@ export const GalleryEditInfo: React.FC<GalleryEditInfoProps> = ({ gallery, handl
   </div>
 }
 
-export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, register, errors, onSubmit, onReset }) => {
+export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSubmit, onReset, form }) => {
+  const { register, formState: { errors } } = form;
+  const { Controller: ImageController } = useFileUploader({ name: 'logo', from: 'galleries', actor: gallery, form }, () => {});
   const id = gallery?.id;
   return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
@@ -86,7 +88,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, regis
     <div className="row">
       <label className="cell-6 label">Logo URL:</label>
       <div className="cell-10">
-        <input type="text" placeholder="logoUrl" {...register("logoUrl")} />
+        <ImageController/>
       </div>
     </div>
     <div className="row">

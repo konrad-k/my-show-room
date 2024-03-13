@@ -1,6 +1,7 @@
 import React from 'react';
 import { Profile as ProfileType } from "../models/profile.model";
 import { EditFormProps } from "./EditForm";
+import useFileUploader from '../hooks/useFileUploader'
 
 interface profileEditFormProps extends EditFormProps {
   profile: ProfileType;
@@ -23,8 +24,10 @@ export class Profile {
   }
 }
 
-export const ProfileEditForm: React.FC<profileEditFormProps> = props => {
-  const { profile, register, errors, onSubmit, onReset } = props;
+export const ProfileEditForm: React.FC<profileEditFormProps> = ({ profile, onSubmit, onReset, form }) => {
+  const { register, formState: { errors } } = form;
+  const { Controller: ImageController } = useFileUploader({ name: 'avatar', from: 'profiles', actor: profile, form }, () => { });
+  
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     <div className="row">
       <label className="cell-6 label">First Name:</label>
@@ -43,7 +46,7 @@ export const ProfileEditForm: React.FC<profileEditFormProps> = props => {
     <div className="row">
       <label className="cell-6 label">Avatar URL:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Avatar url" defaultValue={profile?.avatarUrl} {...register("avatarUrl")} />
+        <ImageController/>
       </div>
     </div>
     <div className="row">

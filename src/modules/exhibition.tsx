@@ -1,10 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import Exhibition from '../models/exhibition.model';
 import Gallery from '../models/gallery.model';
 import { EditFormProps } from './EditForm';
-import { Link } from 'react-router-dom'
 import useFileUploader from '../hooks/useFileUploader'
-
 
 interface ExhibitionProps {
   exhibition: Exhibition;
@@ -57,8 +56,9 @@ export const ExhibitionEditInfo: React.FC<ExhibitionEditInfoProps> = ({ exhibiti
   </div>
 }
 
-export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, register, errors, onSubmit, onReset, setValue, watch, control }) => {
-  const { Controller: PosterController } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, watch, setValue, control, register }, () => { });
+export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, onSubmit, onReset, form }) => {
+  const { register, formState: { errors } } = form;
+  const { Controller: PosterController } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, form }, () => { });
 
   const id = exhibition?.id;
   return <form key={exhibition.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">

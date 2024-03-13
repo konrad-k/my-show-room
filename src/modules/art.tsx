@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Art from '../models/art.model';
 import { EditFormProps } from './EditForm';
-import { Link } from 'react-router-dom';
 import useFileUploader from '../hooks/useFileUploader'
 
 interface ArtProps {
@@ -46,8 +46,9 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
   </div>
 }
 
-export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, register, errors, onSubmit, onReset, control, watch, setValue }) => {
-  const { Controller: ImageController } = useFileUploader({ name: 'image', from: 'arts', actor: art, watch, setValue, control, register }, (url) => {
+export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset, form }) => {
+  const { setValue, register, formState: { errors } } = form;
+  const { Controller: ImageController } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
     if (url) {
       setValue('hdImageUrl', url);
       setValue('posterUrl', url);

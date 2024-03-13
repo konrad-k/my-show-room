@@ -1,13 +1,15 @@
 import React from 'react';
 import Organization from "../models/organization.model";
 import { EditFormProps } from "./EditForm";
+import useFileUploader from '../hooks/useFileUploader'
 
 interface organizationEditFormProps extends EditFormProps {
   organization: Organization;
 }
 
-export const OrganizationEditForm: React.FC<organizationEditFormProps> = props => {
-  const { organization, register, errors, onSubmit, onReset } = props;
+export const OrganizationEditForm: React.FC<organizationEditFormProps> = ({ organization, onSubmit, onReset, form }) => {
+  const { register, formState: { errors } } = form;
+  const { Controller: ImageController } = useFileUploader({ name: 'logo', from: 'organizations', actor: organization, form }, () => {});
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     <div className="row">
       <label className="cell-6 label">Full Name:</label>
@@ -31,7 +33,7 @@ export const OrganizationEditForm: React.FC<organizationEditFormProps> = props =
     <div className="row">
       <label className="cell-6 label">Avatar url:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Avatar url" defaultValue={organization?.avatarUrl} {...register("avatarUrl")} />
+        <ImageController/>
       </div>
     </div>
     <div className="row">

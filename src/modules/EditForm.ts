@@ -1,13 +1,14 @@
 import { FormEventHandler } from 'react';
-import { FieldValues, UseFormReset, UseFormUnregister, UseFormRegister, FieldErrors, UseFormSetValue, Control, UseFormWatch } from "react-hook-form";
+import { UseFormReturn, FieldValues, UseFormReset, UseFormUnregister, UseFormRegister, FieldErrors, UseFormSetValue, Control, UseFormWatch } from "react-hook-form";
 
 export interface EditFormProps {
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-  onSubmit: FormEventHandler<HTMLFormElement>;
-  onReset: UseFormReset<FieldValues>;
+  register?: UseFormRegister<FieldValues>;
+  errors?: FieldErrors<FieldValues>;
+  onSubmit?: FormEventHandler<HTMLFormElement>;
+  onReset?: UseFormReset<FieldValues>;
   setValue?: UseFormSetValue<FieldValues>;
   control?: Control<FieldValues>;
   watch?: UseFormWatch<FieldValues>;
   unregister?: UseFormUnregister<FieldValues>;
+  form?: UseFormReturn;
 }

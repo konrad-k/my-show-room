@@ -5,8 +5,9 @@ import api from "../utils/Api"
 import { v4 as uuidv4 } from 'uuid';
 
 
-const useFileUploader = ({ name, from, actor, watch, setValue, control, register }, onChange) => {
+const useFileUploader = ({ name, from, actor, form }, onChange) => {
 
+  const { control, watch, setValue, register } = form;
   const image = watch(name);
   const imagePreview = image ? URL.createObjectURL(image) : null;
 
