@@ -1,0 +1,19 @@
+.file-loader {
+  max-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px solid #ccc;
+  input {
+    flex: 0 0 auto;
+  }
+  img {
+    max-height: 100%;
+    margin-top: 15px;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+}

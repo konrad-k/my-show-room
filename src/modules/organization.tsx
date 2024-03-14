@@ -2,6 +2,7 @@ import React from 'react';
 import Organization from "../models/organization.model";
 import { EditFormProps } from "./EditForm";
 import useFileUploader from '../hooks/useFileUploader'
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface organizationEditFormProps extends EditFormProps {
   organization: Organization;
@@ -9,7 +10,7 @@ interface organizationEditFormProps extends EditFormProps {
 
 export const OrganizationEditForm: React.FC<organizationEditFormProps> = ({ organization, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: ImageController } = useFileUploader({ name: 'logo', from: 'organizations', actor: organization, form }, () => {});
+  const { Controller: ImageController, loading } = useFileUploader({ name: 'logo', from: 'organizations', actor: organization, form }, () => {});
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     <div className="row">
       <label className="cell-6 label">Full Name:</label>
@@ -37,7 +38,10 @@ export const OrganizationEditForm: React.FC<organizationEditFormProps> = ({ orga
       </div>
     </div>
     <div className="row">
-      <input type="submit" className="button button-primary" value="Save" />
+      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        <span>Save</span>
+      </button>
     </div>
   </form>
 }

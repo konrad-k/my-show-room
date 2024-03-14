@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Gallery from '../models/gallery.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface GalleryProps {
   gallery: Gallery;
@@ -55,7 +56,7 @@ export const GalleryEditInfo: React.FC<GalleryEditInfoProps> = ({ gallery, handl
 
 export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: ImageController } = useFileUploader({ name: 'logo', from: 'galleries', actor: gallery, form }, () => {});
+  const { Controller: ImageController, loading } = useFileUploader({ name: 'logo', from: 'galleries', actor: gallery, form }, () => {});
   const id = gallery?.id;
   return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
@@ -98,7 +99,10 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
       </div>
     </div>
     <div className="row items items-end">
-      <input type="submit" className="button button-primary button-s" value="Save" />
+      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        <span>Save</span>
+      </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />
     </div>
   </form>

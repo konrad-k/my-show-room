@@ -2,6 +2,7 @@ import React from 'react';
 import { Profile as ProfileType } from "../models/profile.model";
 import { EditFormProps } from "./EditForm";
 import useFileUploader from '../hooks/useFileUploader'
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface profileEditFormProps extends EditFormProps {
   profile: ProfileType;
@@ -26,7 +27,7 @@ export class Profile {
 
 export const ProfileEditForm: React.FC<profileEditFormProps> = ({ profile, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: ImageController } = useFileUploader({ name: 'avatar', from: 'profiles', actor: profile, form }, () => { });
+  const { Controller: ImageController, loading } = useFileUploader({ name: 'avatar', from: 'profiles', actor: profile, form }, () => { });
   
   return <form onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     <div className="row">
@@ -50,7 +51,10 @@ export const ProfileEditForm: React.FC<profileEditFormProps> = ({ profile, onSub
       </div>
     </div>
     <div className="row">
-      <input type="submit" className="button button-primary" value="Save" />
+      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        <span>Save</span>
+      </button>
     </div>
   </form>
 }

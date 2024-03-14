@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import api from "../utils/Api"
 import { v4 as uuidv4 } from 'uuid';
-
+import FadeLoader from "react-spinners/FadeLoader";
 
 const useFileUploader = ({ name, from, actor, form }, onChange) => {
 
@@ -12,8 +12,10 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
   const imagePreview = image ? URL.createObjectURL(image) : null;
 
   const [ publicUrl, setPublicUrl ] = useState(null)
+  const [ loading, setLoading ] = useState(false)
   const handleOnChange = (image) => {
     if (image) {
+      setLoading(true);
       const fileName = uuidv4();
       const ext = image.name.substr(image.name.lastIndexOf('.') + 1);
       api.storage.from(from).upload(`${actor.id}/${fileName}.${ext}`, image).then(({ data: image }) => {
@@ -25,6 +27,7 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
         setPublicUrl(publicImage.publicUrl);
         setValue(`${name}Url`, publicImage.publicUrl);
         setValue(`${name}Path`, image.path);
+        setLoading(false);
       });
     }
   }
@@ -36,27 +39,28 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
   }, [imagePreview]);
 
   const renderController = () => {
-    return <>
+    return <label className={`file-loader has-loading ${loading ? 'loading' : ''}`}>
       <Controller 
-      name={name}
-          control={control}
-          render={({ field: { ref, name, onBlur, onChange } }) => (
-            <>
-              <input type="hidden" {...register(`${name}Url`)} />
-              <input type="hidden" {...register(`${name}Path`)} />
-              <input
-                type="file"
-                ref={ref}
-                name={name}
-                onBlur={onBlur}
-                onChange={(e) => { onChange(e.target.files?.[0]); handleOnChange(e.target.files?.[0]) }}
-              />
-            </>
+        name={name}
+        control={control}
+        render={({ field: { ref, name, onBlur, onChange } }) => (
+          <>
+            <input type="hidden" {...register(`${name}Url`)} />
+            <input type="hidden" {...register(`${name}Path`)} />
+            <input
+              type="file"
+              ref={ref}
+              name={name}
+              onBlur={onBlur}
+              onChange={(e) => { onChange(e.target.files?.[0]); handleOnChange(e.target.files?.[0]) }}
+            />
+          </>
         )}
       />
+        {loading && <div className="loading-wrapper"><FadeLoader color="#000"/></div> }
         {imagePreview && <img src={imagePreview} alt="preview" />}
         {!imagePreview && actor[`${name}Url`] && <img src={actor[`${name}Url`]} alt="preview" />}
-      </>
+      </label>
       }
   
 
@@ -67,7 +71,8 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
     image,
     imagePreview,
     Controller: renderController,
-    publicUrl
+    publicUrl,
+    loading
   };
 }
 

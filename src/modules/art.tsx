@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Art from '../models/art.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface ArtProps {
   art: Art;
@@ -48,7 +49,7 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
 
 export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset, form }) => {
   const { setValue, register, formState: { errors } } = form;
-  const { Controller: ImageController } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
+  const { Controller: ImageController, loading } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
     if (url) {
       setValue('hdImageUrl', url);
       setValue('posterUrl', url);
@@ -120,7 +121,10 @@ export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset
       </div>
     </div>
     <div className="row items items-end">
-      <input type="submit" className="button button-primary button-s" value="Save" />
+      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        <span>Save</span>
+      </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />
     </div>
   </form>

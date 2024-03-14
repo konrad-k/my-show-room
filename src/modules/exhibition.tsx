@@ -4,6 +4,7 @@ import Exhibition from '../models/exhibition.model';
 import Gallery from '../models/gallery.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
+import BeatLoader from "react-spinners/BeatLoader";
 
 interface ExhibitionProps {
   exhibition: Exhibition;
@@ -58,7 +59,7 @@ export const ExhibitionEditInfo: React.FC<ExhibitionEditInfoProps> = ({ exhibiti
 
 export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: PosterController } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, form }, () => { });
+  const { Controller: PosterController, loading } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, form }, () => { });
 
   const id = exhibition?.id;
   return <form key={exhibition.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
@@ -96,7 +97,10 @@ export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibiti
       </div>
     </div>
     <div className="row items items-end">
-      <input type="submit" className="button button-primary button-s" value="Save" />
+      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        <span>Save</span>
+      </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />
     </div>
   </form>
