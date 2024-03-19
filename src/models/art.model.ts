@@ -20,4 +20,45 @@ export type Art = {
   location?: string | null;
 }
 
+export const artValidate = {
+  name: {
+    required: "Name is required",
+  },
+  imageUrl: {
+    required: "Image is required"
+  },
+  description: {
+  },
+  title: {
+  },
+  style: {
+    pattern: {
+      value: /^\s*{(\s*"[^"]*"\s*:\s*"[^"]*"\s*,?)*}\s*$/,
+      message: "Style must be a valid JSON object"
+    }
+  },
+  technique: {
+  },
+  width: {
+    pattern: {
+      value: /^\d+(\.\d+)?$/,
+      message: "Width must be a valid float number"
+    }
+  },
+  height: {
+    pattern: {
+      value: /^\d+(\.\d+)?$/,
+      message: "Height must be a valid float number"
+    }
+  },
+  location: {
+    required: "Location is required",
+  },
+  imageUrl: {
+    required: "Image is required",
+  },
+  legalStatus: {
+  },
+}
+
 export default Art;

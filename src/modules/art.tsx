@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Art from '../models/art.model';
+import Art, { artValidate } from '../models/art.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
 import BeatLoader from "react-spinners/BeatLoader";
+import { useTranslation } from "react-i18next";
+import Input from '../components/form/input';
 
 interface ArtProps {
   art: Art;
@@ -28,6 +30,7 @@ export const ArtTile: React.FC<ArtProps> = ({ art }) => {
 }
 
 export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick, handleEditClick }) => {
+
   return <div key={art.id} className="grid grid-form space-2">
     <div className="row">
       <div className="cell-16 items items-end">
@@ -48,6 +51,7 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
 }
 
 export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset, form }) => {
+  const { t } = useTranslation();
   const { setValue, register, formState: { errors } } = form;
   const { Controller: ImageController, loading } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
     if (url) {
@@ -59,70 +63,20 @@ export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset
   const id = art?.id;
   return <form key={art.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
-    <div className="row">
-      <label className="cell-6 label">Legal Status:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Legal Status" {...register("legalStatus")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Image:</label>
-      <div className="cell-10">
-        <ImageController/>
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Name:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Name" {...register("name", { required: true })} />
-        {errors.name && <span>This field is required</span>}
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Description:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Description" {...register("description")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Title:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Title" {...register("title")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Style:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Style" {...register("style")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Technique:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Technique" {...register("technique")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Width:</label>
-      <div className="cell-10">
-        <input type="number" placeholder="Width" {...register("width")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Height:</label>
-      <div className="cell-10">
-        <input type="number" placeholder="Height" {...register("height")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Location:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Location" {...register("location")} />
-      </div>
-    </div>
+    <Input name="name" label="Name" register={register} validations={artValidate} errors={errors} />
+    <Input name="imageUrl" label="Image" register={register} validations={artValidate} errors={errors}>
+      <ImageController />
+    </Input>
+    <Input name="description" label="Description" register={register} validations={artValidate} errors={errors} />
+    <Input name="title" label="Title" register={register} validations={artValidate} errors={errors} />
+    <Input name="style" label="Style" register={register} validations={artValidate} errors={errors} />
+    <Input name="technique" label="Technique" register={register} validations={artValidate} errors={errors} />
+    <Input name="width" label="Width" register={register} validations={artValidate} errors={errors} />
+    <Input name="height" label="Height" register={register} validations={artValidate} errors={errors} />
+    <Input name="location" label="Location" register={register} validations={artValidate} errors={errors} />
     <div className="row items items-end">
       <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
-        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div>}
         <span>Save</span>
       </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />

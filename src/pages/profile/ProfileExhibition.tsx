@@ -41,7 +41,7 @@ const ProfileArt: React.FC = () => {
       delete data.image;
       
       uploadArt(data, id).then(({ art: updatedArt, error }) => {
-        if (error?.message) {
+        if (error) {
           console.log(error.message);
         } else {
           reset();

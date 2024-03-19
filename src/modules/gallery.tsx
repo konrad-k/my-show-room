@@ -70,7 +70,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
     <div className="row">
       <label className="cell-6 label">Name:</label>
       <div className="cell-10">
-        <input type="text" placeholder="Name" {...register("name", { required: true })} />
+        <input type="text" placeholder="Name" {...register("name")} />
         {errors.name && <span>This field is required</span>}
       </div>
     </div>

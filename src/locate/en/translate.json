@@ -1,0 +1,9 @@
+{
+  "translations": {
+    "form": {
+      "validations": {
+        "required": "this field is required"
+      }
+    }
+  }
+}
