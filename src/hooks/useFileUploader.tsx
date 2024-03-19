@@ -11,24 +11,31 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
   const image = watch(name);
   const imagePreview = image ? URL.createObjectURL(image) : null;
 
-  const [ publicUrl, setPublicUrl ] = useState(null)
-  const [ loading, setLoading ] = useState(false)
+  const [publicUrl, setPublicUrl] = useState(null)
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
   const handleOnChange = (image) => {
     if (image) {
       setLoading(true);
       const fileName = uuidv4();
       const ext = image.name.substr(image.name.lastIndexOf('.') + 1);
-      api.storage.from(from).upload(`${actor.id}/${fileName}.${ext}`, image).then(({ data: image }) => {
-        const { data: publicImage } = api
-          .storage
-          .from(from)
-          .getPublicUrl(image.path);
-        onChange(publicImage.publicUrl, image.path);
-        setPublicUrl(publicImage.publicUrl);
-        setValue(`${name}Url`, publicImage.publicUrl);
-        setValue(`${name}Path`, image.path);
-        setLoading(false);
-      });
+      api.storage.from(from).upload(`${actor.id}/${fileName}.${ext}`, image).then(({ data: image, error }) => {
+        if (error) {
+          setErrors(error);
+          setLoading(false);
+        } else {
+          const { data: publicImage } = api
+            .storage
+            .from(from)
+            .getPublicUrl(image.path);
+          onChange(publicImage.publicUrl, image.path);
+          setPublicUrl(publicImage.publicUrl);
+          setValue(`${name}Url`, publicImage.publicUrl);
+          setValue(`${name}Path`, image.path);
+          setLoading(false);
+        }
+
+      })
     }
   }
 
@@ -40,7 +47,7 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
 
   const renderController = () => {
     return <label className={`file-loader has-loading ${loading ? 'loading' : ''}`}>
-      <Controller 
+      <Controller
         name={name}
         control={control}
         render={({ field: { ref, name, onBlur, onChange } }) => (
@@ -57,14 +64,14 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
           </>
         )}
       />
-        {loading && <div className="loading-wrapper"><FadeLoader color="#000"/></div> }
-        {imagePreview && <img src={imagePreview} alt="preview" />}
-        {!imagePreview && actor[`${name}Url`] && <img src={actor[`${name}Url`]} alt="preview" />}
-      </label>
-      }
-  
+      {loading && <div className="loading-wrapper"><FadeLoader color="#000" /></div>}
+      {imagePreview && !errors && <img src={imagePreview} alt="preview" />}
+      {!imagePreview && !errors && actor[`${name}Url`] && <img src={actor[`${name}Url`]} alt="preview" />}
+    </label>
+  }
 
-  
+
+
 
 
   return {
@@ -72,7 +79,8 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
     imagePreview,
     Controller: renderController,
     publicUrl,
-    loading
+    loading,
+    imageErrors: errors
   };
 }
 

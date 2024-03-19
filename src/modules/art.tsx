@@ -53,7 +53,7 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
 export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset, form }) => {
   const { t } = useTranslation();
   const { setValue, register, formState: { errors } } = form;
-  const { Controller: ImageController, loading } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
+  const { Controller: ImageController, loading, imageErrors } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
     if (url) {
       setValue('hdImageUrl', url);
       setValue('posterUrl', url);
@@ -64,7 +64,7 @@ export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset
   return <form key={art.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
     <Input name="name" label="Name" register={register} validations={artValidate} errors={errors} />
-    <Input name="imageUrl" label="Image" register={register} validations={artValidate} errors={errors}>
+    <Input name="imageUrl" label="Image" register={register} validations={artValidate} errors={{ ...errors, imageUrl: imageErrors }}>
       <ImageController />
     </Input>
     <Input name="description" label="Description" register={register} validations={artValidate} errors={errors} />

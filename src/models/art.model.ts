@@ -54,9 +54,6 @@ export const artValidate = {
   location: {
     required: "Location is required",
   },
-  imageUrl: {
-    required: "Image is required",
-  },
   legalStatus: {
   },
 }
