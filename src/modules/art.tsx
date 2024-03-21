@@ -53,12 +53,14 @@ export const ArtEditInfo: React.FC<ArtEditInfoProps> = ({ art, handleDeleteClick
 export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset, form }) => {
   const { t } = useTranslation();
   const { setValue, register, formState: { errors } } = form;
-  const { Controller: ImageController, loading, imageErrors } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
+  const { Controller: ImageController, isLoading: imageLoading, imageErrors } = useFileUploader({ name: 'image', from: 'arts', actor: art, form }, (url) => {
     if (url) {
       setValue('hdImageUrl', url);
       setValue('posterUrl', url);
     }
   });
+
+  const isLoading = form.formState.isSubmitting || imageLoading;
 
   const id = art?.id;
   return <form key={art.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
@@ -67,16 +69,15 @@ export const ArtEditForm: React.FC<ArtEditFormProps> = ({ art, onSubmit, onReset
     <Input name="imageUrl" label="Image" register={register} validations={artValidate} errors={{ ...errors, imageUrl: imageErrors }}>
       <ImageController />
     </Input>
-    <Input name="description" label="Description" register={register} validations={artValidate} errors={errors} />
+    <Input name="description" type="textarea" label="Description" register={register} validations={artValidate} errors={errors} />
     <Input name="title" label="Title" register={register} validations={artValidate} errors={errors} />
     <Input name="style" label="Style" register={register} validations={artValidate} errors={errors} />
     <Input name="technique" label="Technique" register={register} validations={artValidate} errors={errors} />
     <Input name="width" label="Width" register={register} validations={artValidate} errors={errors} />
     <Input name="height" label="Height" register={register} validations={artValidate} errors={errors} />
-    <Input name="location" label="Location" register={register} validations={artValidate} errors={errors} />
     <div className="row items items-end">
-      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
-        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div>}
+      <button type="submit" className={`button button-primary has-loading ${isLoading ? 'loading' : ''}`}>
+        {isLoading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div>}
         <span>Save</span>
       </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />

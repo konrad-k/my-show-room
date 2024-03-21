@@ -10,4 +10,26 @@ export type Gallery = {
   style: JSON;
 }
 
+export const galleryValidate = {
+  fullName: {
+    required: "Full Name is required",
+  },
+  name: {
+    required: "Name is required",
+  },
+  description: {
+  },
+  address: {
+  },
+  logoUrl: {
+    required: "Image is required"
+  },
+  style: {
+    pattern: {
+      value: /^\s*{(\s*"[^"]*"\s*:\s*"[^"]*"\s*,?)*}\s*$/,
+      message: "Style must be a valid JSON object"
+    }
+  }
+}
+
 export default Gallery;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Gallery from '../models/gallery.model';
+import Gallery, { galleryValidate } from '../models/gallery.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
 import BeatLoader from "react-spinners/BeatLoader";
+import Input from '../components/form/input';
 
 interface GalleryProps {
   gallery: Gallery;
@@ -56,51 +57,24 @@ export const GalleryEditInfo: React.FC<GalleryEditInfoProps> = ({ gallery, handl
 
 export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: ImageController, loading } = useFileUploader({ name: 'logo', from: 'galleries', actor: gallery, form }, () => {});
+  const { Controller: ImageController, isLoading: imageLoading, imageErrors } = useFileUploader({ name: 'logo', from: 'galleries', actor: gallery, form }, () => { });
   const id = gallery?.id;
+
+  const isLoading = form.formState.isSubmitting || imageLoading;
+
   return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
-    <div className="row">
-      <label className="cell-6 label">Full Name:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Full Name" {...register("fullName", { required: true })} />
-        {errors.fullName && <span>This field is required</span>}
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Name:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Name" {...register("name")} />
-        {errors.name && <span>This field is required</span>}
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Description:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="description" {...register("description")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Address:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="address" {...register("address")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Logo URL:</label>
-      <div className="cell-10">
-        <ImageController/>
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Style:</label>
-      <div className="cell-10">
-        <textarea placeholder="style" {...register("style")} />
-      </div>
-    </div>
+    <Input name="fullName" label="Full name" register={register} validations={galleryValidate} errors={errors} />
+    <Input name="name" label="Name" register={register} validations={galleryValidate} errors={errors} />
+    <Input name="description" type="textarea" label="Description" register={register} validations={galleryValidate} errors={errors} />
+    <Input name="address" type="textarea" label="Address" register={register} validations={galleryValidate} errors={errors} />
+    <Input name="logoUrl" label="logo" register={register} validations={galleryValidate} errors={{ ...errors, imageUrl: imageErrors }}>
+      <ImageController />
+    </Input>
+    <Input name="style" label="Style" type="textarea" register={register} validations={galleryValidate} errors={errors} />
     <div className="row items items-end">
-      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
-        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+      <button type="submit" className={`button button-primary has-loading ${isLoading ? 'loading' : ''}`}>
+        {isLoading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div>}
         <span>Save</span>
       </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />

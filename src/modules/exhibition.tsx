@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Exhibition from '../models/exhibition.model';
+import Exhibition, { exhibitionValidate } from '../models/exhibition.model';
 import Gallery from '../models/gallery.model';
 import { EditFormProps } from './EditForm';
 import useFileUploader from '../hooks/useFileUploader'
 import BeatLoader from "react-spinners/BeatLoader";
+import Input from '../components/form/input';
 
 interface ExhibitionProps {
   exhibition: Exhibition;
@@ -59,46 +60,23 @@ export const ExhibitionEditInfo: React.FC<ExhibitionEditInfoProps> = ({ exhibiti
 
 export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibition, onSubmit, onReset, form }) => {
   const { register, formState: { errors } } = form;
-  const { Controller: PosterController, loading } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, form }, () => { });
+  const { Controller: PosterController, isLoading: imageLoading, imageErrors: posterErrors } = useFileUploader({ name: 'poster', from: 'exhibitions', actor: exhibition, form }, () => { });
+
+  const isLoading = form.formState.isSubmitting || imageLoading;
 
   const id = exhibition?.id;
   return <form key={exhibition.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2">
     {id && <input type="hidden" {...register("id")} />}
-    <div className="row">
-      <label className="cell-6 label">Full Name:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Full Name" {...register("fullName", { required: true })} />
-        {errors.fullName && <span>{errors.fullName.message.toString()}</span>}
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Name:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="Name" {...register("name", { required: true })} />
-        {errors.name && <span>{errors.name.message.toString()}</span>}
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Description:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="description" {...register("description")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Address:</label>
-      <div className="cell-10">
-        <input type="text" placeholder="address" {...register("address")} />
-      </div>
-    </div>
-    <div className="row">
-      <label className="cell-6 label">Poster URL:</label>
-      <div className="cell-10">
-        <PosterController/>
-      </div>
-    </div>
+    <Input name="fullName" label="Full name" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="name" label="Name" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="description" type="textarea" label="Description" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="address" type="textarea" label="Address" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="posterUrl" label="Poster URL" register={register} validations={exhibitionValidate} errors={{ ...errors, posterUrl: posterErrors }}>
+      <PosterController />
+    </Input>
     <div className="row items items-end">
-      <button type="submit" className={`button button-primary has-loading ${loading ? 'loading' : ''}`}>
-        {loading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div> }
+      <button type="submit" className={`button button-primary has-loading ${isLoading ? 'loading' : ''}`}>
+        {isLoading && <div className="loading-wrapper"><BeatLoader color="currentColor" size={10} /></div>}
         <span>Save</span>
       </button>
       <input type="reset" className="button button-mute button-s" value="Cancel" />

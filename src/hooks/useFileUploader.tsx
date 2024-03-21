@@ -33,6 +33,7 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
           setValue(`${name}Url`, publicImage.publicUrl);
           setValue(`${name}Path`, image.path);
           setLoading(false);
+          setErrors(null);
         }
 
       })
@@ -79,7 +80,7 @@ const useFileUploader = ({ name, from, actor, form }, onChange) => {
     imagePreview,
     Controller: renderController,
     publicUrl,
-    loading,
+    isLoading: loading,
     imageErrors: errors
   };
 }

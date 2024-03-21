@@ -26,10 +26,10 @@ const ProfileIndex: React.FC = () => {
 
   const profileForm = useForm();
   const { handleSubmit: handleSubmitProfile, formState: { isValid: isValidProfile }, reset: profileReset } = profileForm;
-  
+
   const organizationForm = useForm();
   const { handleSubmit: handleSubmitOrganization, formState: { isValid: isValidOrganization }, reset: organizationReset } = organizationForm;
-  
+
   const galleryForm = useForm({ defaultValues: {} });
   const { handleSubmit: handleSubmitGallery, formState: { isValid: isValidGallery }, reset: galleryReset } = galleryForm;
 
@@ -176,13 +176,13 @@ const ProfileIndex: React.FC = () => {
             </div>
           </div>
         ) : (
-            <div key={gallery.id} className="section with-padding gallery-info">
+          <div key={gallery.id} className="section with-padding gallery-info">
             <div className="section-content">
-                <GalleryEditInfo
-                  gallery={gallery}
-                  handleDeleteClick={handleDeleteGalleryClick}
-                  handleEditClick={handleEditGalleryClick}
-                />
+              <GalleryEditInfo
+                gallery={gallery}
+                handleDeleteClick={handleDeleteGalleryClick}
+                handleEditClick={handleEditGalleryClick}
+              />
             </div>
           </div>
         )
@@ -203,7 +203,7 @@ const ProfileIndex: React.FC = () => {
         </div>
       ) : null
     }
-    <p>gallery limit: { galleryLimit }</p>
+    <p>gallery limit: {galleryLimit}</p>
     {
       !galleryEditing && galleries.length < parseInt(galleryLimit) && <button onClick={handleAddGallery} className="button">Add new gallery</button>
     }

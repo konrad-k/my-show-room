@@ -17,7 +17,6 @@ export type Art = {
   technique?: string | null;
   width?: number | null;
   height?: number | null;
-  location?: string | null;
 }
 
 export const artValidate = {
@@ -50,9 +49,6 @@ export const artValidate = {
       value: /^\d+(\.\d+)?$/,
       message: "Height must be a valid float number"
     }
-  },
-  location: {
-    required: "Location is required",
   },
   legalStatus: {
   },
