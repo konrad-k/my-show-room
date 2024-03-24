@@ -71,6 +71,8 @@ export const ExhibitionEditForm: React.FC<ExhibitionEditFormProps> = ({ exhibiti
     <Input name="name" label="Name" register={register} validations={exhibitionValidate} errors={errors} />
     <Input name="description" type="textarea" label="Description" register={register} validations={exhibitionValidate} errors={errors} />
     <Input name="address" type="textarea" label="Address" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="startAt" label="Start at" type="datetime-local" register={register} validations={exhibitionValidate} errors={errors} />
+    <Input name="endAt" label="End at" type="datetime-local" register={register} validations={exhibitionValidate} errors={errors} />
     <Input name="posterUrl" label="Poster URL" register={register} validations={exhibitionValidate} errors={{ ...errors, posterUrl: posterErrors }}>
       <PosterController />
     </Input>

@@ -27,15 +27,16 @@ export const exhibitionValidate = {
   },
   startAt: {
     pattern: {
-      value: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/,
+      value: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/,
       message: "Start date must be a valid date"
     }
   },
   endAt: {
     pattern: {
-      value: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/,
+      value: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/,
       message: "End date must be a valid date"
-    }
+    },
+    validate: (value, allValues) => new Date(value) > new Date(allValues.startAt) || 'End date must be later than start date'
   },
   posterUrl: {
   }

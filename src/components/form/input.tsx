@@ -11,27 +11,40 @@ interface InputParams {
   errors: any,
   validations: any,
   cellWidth?: number,
-  children?: any
+  children?: any,
+  readonly: boolean
 }
 
-const Input = ({ type = 'text', name, label, placeholder, options, register, errors, validations, cellWidth = 10, children }: InputParams) => {
+const Input = ({ type = 'text', name, label, placeholder, options, register, errors, validations, cellWidth = 10, children, readonly = false }: InputParams) => {
   const returnType = () => {
     switch (type) {
       case 'textarea':
         return <textarea
           placeholder={placeholder}
+          readOnly={readonly}
           {...register(name, validations[name])}
         />
       case 'select':
         return <select
           placeholder={placeholder}
+          readOnly={readonly}
           {...register(name, validations[name])}
         >
           {options && options.map(option => <option value={option.value}>{option.label}</option>)}
         </select>
+
+      case 'datetime-local':
+        return <input
+          type={type}
+          readOnly={readonly}
+          placeholder={placeholder}
+          {...register(name, { ...validations[name], setValueAs: v => new Date(v).toLocaleString() })}
+        />
+
       default:
         return <input
           type={type}
+          readOnly={readonly}
           placeholder={placeholder}
           {...register(name, validations[name])}
         />
