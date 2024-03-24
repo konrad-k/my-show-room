@@ -91,20 +91,20 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
 
   const [position, setPosition] = useState({ latitude: gallery.latitude || 50, longitude: gallery.longitude || 10 });
 
-  const setLocation = (position, form) => {
+  const setLocation = (position) => {
     form.setValue('latitude', position.latitude);
     form.setValue('longitude', position.longitude);
     setPosition(position);
   }
 
-  const getLocation = (form) => {
+  const getLocation = () => {
     const options = {
       enableHighAccuracy: true,
       timeout: 10000
     };
 
     function success(pos) {
-      setLocation(pos.coords, form);
+      setLocation(pos.coords);
     }
 
     function error(err) {
@@ -114,7 +114,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
     navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
-  const getLocationFromAddress = (form) => {
+  const getLocationFromAddress = () => {
     const geocoder = new window.google.maps.Geocoder();
 
     geocoder.geocode({ address: form.getValues('address') }, (results, status) => {
@@ -123,13 +123,20 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
           latitude: results[0].geometry.location.lat(),
           longitude: results[0].geometry.location.lng()
         };
-        setLocation(position, form);
+        setLocation(position);
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     });
   }
 
+  const getLocationFromMap = (e) => {
+    const position = {
+      latitude: e.latLng.lat(),
+      longitude: e.latLng.lng()
+    };
+    setLocation(position);
+  }
 
   return <form key={gallery.id || Date.now()} onSubmit={onSubmit} onReset={onReset} noValidate={true} className="grid grid-form space-2 gutter-2">
     {id && <input type="hidden" {...register("id")} />}
@@ -143,10 +150,10 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
     <Input name="address" type="textarea" label="Address" register={register} validations={galleryValidate} errors={errors} />
     <div className="row">
       <div className="cell-6">
-        <button type="button" className="button button-s block" onClick={() => getLocation(form)}>Get my browser location</button>
+        <button type="button" className="button button-s block" onClick={() => getLocation()}>Get my browser location</button>
       </div>
       <div className="cell-10">
-        <button type="button" className="button button-primary button-s block" onClick={() => getLocationFromAddress(form)}>Get location from address</button>
+        <button type="button" className="button button-primary button-s block" onClick={() => getLocationFromAddress()}>Get location from address</button>
       </div>
     </div>
     <div className="row">
@@ -159,10 +166,12 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
             center={{ lat: position.latitude, lng: position.longitude }}
             zoom={googleMapsZoom}
           >
-            <MarkerF position={{ lat: position.latitude, lng: position.longitude }} visible={true} />
+            <MarkerF position={{ lat: position.latitude, lng: position.longitude }} visible={true} draggable={true} onDragEnd={(e) => getLocationFromMap(e)} />
           </GoogleMap>
         </LoadScript>
       </div>
+      <div className="cell-16"><p>Dragg pin position for adjust.</p></div>
+
     </div>
     <Input name="latitude" label="Latitude" register={register} validations={galleryValidate} errors={errors} readonly={true} />
     <Input name="longitude" label="Longitude" register={register} validations={galleryValidate} errors={errors} readonly={true} />
