@@ -12,7 +12,7 @@ interface InputParams {
   validations: any,
   cellWidth?: number,
   children?: any,
-  readonly: boolean
+  readonly?: boolean
 }
 
 const Input = ({ type = 'text', name, label, placeholder, options, register, errors, validations, cellWidth = 10, children, readonly = false }: InputParams) => {
