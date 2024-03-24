@@ -100,8 +100,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
   const getLocation = (form) => {
     const options = {
       enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
+      timeout: 10000
     };
 
     function success(pos) {
@@ -109,6 +108,7 @@ export const GalleryEditForm: React.FC<GalleryEditFormProps> = ({ gallery, onSub
     }
 
     function error(err) {
+      console.error(`ERROR(${err.code}): ${err.message}`);
     }
 
     navigator.geolocation.getCurrentPosition(success, error, options);
