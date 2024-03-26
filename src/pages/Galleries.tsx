@@ -5,13 +5,10 @@ import { GoogleMap, MarkerF, useJsApiLoader} from "@react-google-maps/api";
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
-const Galleries: FC = () => {
+const Galleries: React.FC = () => {
   const [galleries, setGalleries] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [center, setCenter] = useState(null);
-
-
-  
 
   useEffect(() => {
     getGalleries().then(({ galleries }) => setGalleries(galleries));
