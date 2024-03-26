@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSessionUserContext } from '../contexts/SessionUser';
-import { Profile } from '../modules/profile';
 import { getGallery } from '../services/gallery';
 import { getExhibitions } from '../services/exhibition';
 import { ExhibitionTile } from '../modules/exhibition';
 import { useParams } from 'react-router-dom';
 
 const Gallery: React.FC = () => {
-  const { sessionUser } = useSessionUserContext();
-  const profile = new Profile(sessionUser?.profile);
   const [gallery, setGallery] = useState(null);
   const [exhibitions, setExhibitions] = useState([]);
   const { name } = useParams();

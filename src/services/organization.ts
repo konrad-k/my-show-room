@@ -1,7 +1,7 @@
-import api from "../utils/Api"
-import Organization from "../models/organization.model";
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
+import api from "../utils/Api"
+import Organization from "../models/organization.model";
 import { FieldValues } from "react-hook-form";
 
 export const getOrganization = async (userId: string) => {

@@ -3,7 +3,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 import LayoutMain from "./layouts/LayoutMain";
 import LayoutGallery from "./layouts/LayoutGallery";
 import { Navigate } from 'react-router-dom';
-import Autorization from "./pages/users/Autorization";
+import Authorization from "./pages/users/Authorization";
 import Signup from "./pages/users/Signup";
 import Logout from "./pages/users/Logout";
 import Dashboard from "./pages/Dashboard";
@@ -96,7 +96,7 @@ const App: React.FC = () => {
       },
       {
         path: 'login',
-        element: <Autorization />,
+        element: <Authorization />,
       },
       {
         path: 'signup',
