@@ -1,9 +1,10 @@
-import React from 'react';
-import supabase from "../../utils/Api"
+import React, { useEffect } from 'react';
+import api from "../../utils/Api"
 import { useSessionUserContext } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import Input from '../../components/form/input';
+import { userValidate } from '../../models/user.model';
 
 const Signup: React.FC = () => {
   const { sessionUser, setSessionUser } = useSessionUserContext();
@@ -15,7 +16,7 @@ const Signup: React.FC = () => {
 
   async function signUp(email = '', password = '') {
     if (email && password)
-      await supabase?.auth.signUp({
+      await api?.auth.signUp({
         email: email,
         password: password,
       }).then((response) => {
@@ -46,45 +47,21 @@ const Signup: React.FC = () => {
       <div className="cell-auto">
         <h1 className="text-center">Sign up</h1>
         <form onSubmit={handleSubmit(onSubmit)} noValidate={true} className="grid grid-form space-2 max-width-3">
+          <Input name="email" label="E-mail" register={register} validations={userValidate} errors={errors} />
+          <Input name="emailConfirm" label="E-mail repeat" register={register} validations={userValidate} errors={errors} />
+          <Input name="password" type="password" label="Password" register={register} validations={userValidate} errors={errors} />
+          <Input name="passwordConfirm" type="password" label="Password repeat" register={register} validations={userValidate} errors={errors} />
           <div className="row">
-            <label className="cell-6 label">E-mail:</label>
-            <div className="cell-10">
-              <input type="email" placeholder="Email" defaultValue="" {...register("email", { required: true })} />
-              {errors.email && <span>This field is required</span>}
-
-            </div>
-          </div>
-          <div className="row">
-            <label className="cell-6 label">E-mail repeat:</label>
-            <div className="cell-10">
-              <input type="email" placeholder="Email repeat" defaultValue="" {...register("emailConfirm", { required: true, validate: (value) => value === getValues("email") || "email don't match" })} />
-              {errors.email && <span>This field is required</span>}
-
-            </div>
-          </div>
-          <div className="row">
-            <label className="cell-6 label">Password:</label>
-            <div className="cell-10">
-              <input type="password" placeholder="Password" {...register("password", { required: true })} />
-              {errors.password && <span>This field is required</span>}
-
-            </div>
-          </div>
-          <div className="row">
-            <label className="cell-6 label">Password repeat:</label>
-            <div className="cell-10">
-              <input type="password" placeholder="Password repeat" {...register("passwordConfirm", { required: true, validate: (value) => value === getValues("password") || "password don't match" })} />
-              {errors.password && <span>This field is required</span>}
-
-            </div>
             <div className="cell-16">
-              <input type="submit" className="button button-primary" value="register" />
+              <input type="submit" className="button block button-primary" value="Sign up" />
             </div>
           </div>
-          <div className="cell-16">
-            <p className="text-center">
-              <a href="#/login">Log in</a>
-            </p>
+          <div className="row">
+            <div className="cell-16">
+              <p className="text-center">
+                <a href="#/login">Log in</a>
+              </p>
+            </div>
           </div>
         </form>
       </div>

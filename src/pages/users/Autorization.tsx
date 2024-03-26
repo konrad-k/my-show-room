@@ -1,10 +1,11 @@
-import React from 'react';
-import supabase from "../../utils/Api"
+import React, { useEffect } from 'react';
+import api from "../../utils/Api"
 import { useSessionUserContext, SessionUser } from '../../contexts/SessionUser';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import camelcaseKeys from 'camelcase-keys';
+import Input from '../../components/form/input';
+import { userValidate } from '../../models/user.model';
 
 const Autorization: React.FC = () => {
   const { sessionUser, setSessionUser } = useSessionUserContext();
@@ -15,7 +16,7 @@ const Autorization: React.FC = () => {
   }
 
   async function signInWithEmail(email: any, password: any) {
-    supabase.auth.signInWithPassword({
+    api.auth.signInWithPassword({
       email: email,
       password: password,
     }).then((response) => {
@@ -23,12 +24,11 @@ const Autorization: React.FC = () => {
       if (error) {
         alert(error);
       } else if (data) {
-
-        const profilePromise = supabase.from('profiles')
+        const profilePromise = api.from('profiles')
           .select("*")
           .eq('user_id', data?.session?.user.id)
 
-        const organizationPromise = supabase.from('organizations')
+        const organizationPromise = api.from('organizations')
           .select("*")
           .eq('user_id', data?.session?.user.id)
 
@@ -51,7 +51,6 @@ const Autorization: React.FC = () => {
           });
       }
     });
-
   }
 
   useEffect(() => {
@@ -69,23 +68,10 @@ const Autorization: React.FC = () => {
       <div className="cell-auto">
         <h1 className="text-center">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-form space-2 max-width-3">
-          <div className="row">
-            <label className="cell-6 label">E-mail:</label>
-            <div className="cell-10">
-              <input type="email" placeholder="Email" defaultValue="" {...register("email")} />
-              {errors.email && <span>{errors.email.toString()}</span>}
-            </div>
-          </div>
-          <div className="row">
-            <label></label>
-            <label className="cell-6 label">Password:</label>
-            <div className="cell-10">
-              <input type="password" placeholder="Password" {...register("password", { required: true })} />
-              {errors.password && <span>{errors.password.message.toString()}</span>}
-            </div>
-          </div>
+          <Input name="email" label="E-mail" register={register} validations={userValidate} errors={errors} />
+          <Input name="password" type="password" label="Password" register={register} validations={userValidate} errors={errors} />
           <div className="cell-16">
-            <input type="submit" className="button width-100 button-primary" value="Login" />
+            <input type="submit" className="button block button-primary" value="Login" />
           </div>
           <div className="cell-16">
             <p className="text-center">

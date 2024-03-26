@@ -1,9 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom'
-import {
-  SessionUserProvider,
-  useSessionUserContext,
-} from '../contexts/SessionUser';
+import { useSessionUserContext } from '../contexts/SessionUser';
 
 
 const Main: React.FC = () => {
@@ -28,9 +25,21 @@ const Main: React.FC = () => {
                     </li>
                   </>
                 }
-                <li className="item margin-left-auto margin-right-0">
-                  {sessionUser ? <Link className="anchor" to="/logout">Logout</Link> : <Link className="anchor" to="/login">Login</Link>}
-                </li>
+                
+                {sessionUser ?
+                  <li className="item margin-left-auto margin-right-0">
+                    <Link className="anchor" to="/logout">Logout</Link>
+                  </li>:
+                  <>
+                    <li className="item margin-left-auto margin-right-0">
+                      <Link className="anchor" to="/login">Login</Link>
+                    </li>
+
+                    <li className="item margin-right-0">
+                      <Link className="anchor" to="/signup">Sign up</Link>
+                    </li>
+                  </>
+                  }
               </ul>
             </nav>
           </div>

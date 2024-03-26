@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { GoogleMap, MarkerF, LoadScript } from "@react-google-maps/api";
 import { Link } from 'react-router-dom'
 import Gallery, { galleryValidate } from '../models/gallery.model';
